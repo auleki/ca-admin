@@ -38,7 +38,7 @@ const Row = props => {
         <TableCell>{row.username}</TableCell>
         <TableCell>{row.email}</TableCell>
         <TableCell><Moment date={row.wonAt} /></TableCell>
-        <TableCell>{row.totalWins}</TableCell>
+        <TableCell align="center">{row.totalWins}</TableCell>
       </TableRow>
     </>
   )
@@ -59,13 +59,13 @@ const MaterialTable = () => {
 
   return (
     <TableContainer component={Paper}>
-      <Table aria-label='collapsible table'>
+      <Table aria-label='basic table'>
         <TableHead>
           <TableCell>Fullname</TableCell>
           <TableCell>Username</TableCell>
           <TableCell>Email</TableCell>
           <TableCell>Date Won</TableCell>
-          <TableCell>Times Won</TableCell>
+          <TableCell align="center">Times Won</TableCell>
         </TableHead>
         <TableBody>
           {data.map((item, i) => <Row row={item} key={i}/>)}
