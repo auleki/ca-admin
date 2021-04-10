@@ -4,6 +4,7 @@ const Overview = () => {
   return (
     <PageWrap>
       <h2>Overview Page</h2>
+      <p>Rascal</p>
     </PageWrap>
   )
 }
