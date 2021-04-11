@@ -37,8 +37,10 @@ const Row = props => {
         <TableCell>{`${row.firstName} ${row.lastName}`}</TableCell>
         <TableCell>{row.username}</TableCell>
         <TableCell>{row.email}</TableCell>
-        <TableCell><Moment date={row.wonAt} /></TableCell>
-        <TableCell align="center">{row.totalWins}</TableCell>
+        <TableCell>
+          <Moment date={row.wonAt} />
+        </TableCell>
+        <TableCell align='center'>{row.totalWins}</TableCell>
       </TableRow>
     </>
   )
@@ -49,7 +51,8 @@ const MaterialTable = () => {
 
   useEffect(() => {
     async function loadWinners () {
-      const url = 'https://afternoon-chamber-08446.herokuapp.com/api/quiz/winner'
+      const url =
+        'https://afternoon-chamber-08446.herokuapp.com/api/quiz/winner'
       const { data } = await fetchData(url)
       console.log(data)
       setData(data)
@@ -61,14 +64,18 @@ const MaterialTable = () => {
     <TableContainer component={Paper}>
       <Table aria-label='basic table'>
         <TableHead>
-          <TableCell>Fullname</TableCell>
-          <TableCell>Username</TableCell>
-          <TableCell>Email</TableCell>
-          <TableCell>Date Won</TableCell>
-          <TableCell align="center">Times Won</TableCell>
+          <TableRow>
+            <TableCell>Fullname</TableCell>
+            <TableCell>Username</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Date Won</TableCell>
+            <TableCell align='center'>Times Won</TableCell>
+          </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item, i) => <Row row={item} key={i}/>)}
+          {data.map((item, i) => (
+            <Row row={item} key={i} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
