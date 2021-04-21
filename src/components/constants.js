@@ -10,7 +10,8 @@ import * as FiIcon from 'react-icons/fi'
 import {
   AiOutlineTrophy,
   AiOutlineClockCircle,
-  AiOutlinePicture
+  AiOutlinePicture,
+  AiOutlineClose
 } from 'react-icons/ai'
 
 export const colors = {
@@ -46,6 +47,8 @@ export const icons = {
   time: <AiOutlineClockCircle />,
   image: <AiOutlinePicture />,
   login: <FiIcon.FiLogIn />,
-  lock: <FcIcon.FcLock />,
-  businessMan: <FcIcon.FcBusinessman />
+  lock: <FiIcon.FiLock />,
+  lockColored: <FcIcon.FcLock />,
+  businessMan: <FcIcon.FcBusinessman />,
+  close: <AiOutlineClose />
 }
