@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { Link } from 'react-router-dom'
 import { fonts, colors } from './constants'
 import { withStyles } from '@material-ui/core/styles'
@@ -482,6 +482,15 @@ export const FormStyle = styled.form(
     margin-top: 10%;
     /* background: ${colors.black}; */
 
+    /* .errorMsg {
+      color: ${colors.altWhite};
+      padding: .5em 0;
+      margin-bottom: 1em;
+      border-radius: 1em;
+      background: ${colors.red};
+      text-align: center
+    } */
+
     .formHeader {
       font-family: ${fonts.ibmPlex};
       font-size: 1.3em;
@@ -498,4 +507,62 @@ export const FormStyle = styled.form(
       }
     }
   `
+)
+
+const SlideIn = keyframes`
+  0% {
+    transform: translateX(15%);
+  }
+
+  60% {
+    transform: translateX(0);
+  }
+
+  80% {
+    transform: translateX(-5%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+
+`
+
+export const ErrorStyle = styled.div(
+  ({ color }) => css`
+    background: ${colors.red};
+    color: ${colors.altWhite};
+    padding: 0.5em 1em;
+    position: relative;
+    animation: 100ms ${SlideIn} ease-in;
+    margin-bottom: 1em;
+    border-radius: 1em;
+
+    .icon {
+      position: absolute;
+      color: ${colors.black};
+      height: 1.4em;
+      width: 1.4em;
+      right: 0.3em;
+      top: 15%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: color 150ms ease-in, background 300ms ease-in;
+      &:hover {
+        color: ${colors.white};
+        background: ${colors.black};
+      }
+    }
+  `
+
+  // .errorMsg {
+  //   padding: .5em 0;
+  //   margin-bottom: 1em;
+  //   border-radius: 1em;
+  //   background: ${colors.red};
+  //   text-align: center
+  // }
 )

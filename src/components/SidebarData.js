@@ -6,9 +6,16 @@ import * as GiIcons from 'react-icons/gi'
 
 export const SidebarData = [
   {
+    title: 'Overview',
+    path: '/',
+    icon: <GiIcons.GiDeadEye />,
+    iconOpen: <RiIcons.RiArrowDownSFill />,
+    iconClosed: <RiIcons.RiArrowUpSFill />
+  },
+  {
     title: 'Clothing',
     path: '/clothing',
-    icon: <GiIcons.GiClothes />,
+    icon: <GiIcons.GiAmpleDress />,
     iconOpen: <RiIcons.RiArrowDownSFill />,
     iconClosed: <RiIcons.RiArrowUpSFill />,
     subNav: [
@@ -27,14 +34,14 @@ export const SidebarData = [
   {
     title: 'Users',
     path: '/users',
-    icon: <AiIcons.AiOutlineTeam />,
+    icon: <AiIcons.AiOutlineUser />,
     iconOpen: <RiIcons.RiArrowDownSFill />,
     iconClosed: <RiIcons.RiArrowUpSFill />,
     subNav: [
       {
         title: 'Subscribers',
         path: '/users/subscribers',
-        icon: <AiIcons.AiOutlineUsergroupAdd />
+        icon: <AiIcons.AiOutlineUserAdd />
       }
       // difference is over here all blocked accounts and their source is showed
     ]
@@ -53,7 +60,7 @@ export const SidebarData = [
       }
       // specific cause players can be blocked for any reason
     ]
-  },
+  }
   // {
   //   title: 'History',
   //   path: '/history',
@@ -61,7 +68,7 @@ export const SidebarData = [
   //   iconOpen: <RiIcons.RiArrowDownSFill />,
   //   iconClosed: <RiIcons.RiArrowUpSFill />
   // },
-  
+
   // {
   //   title: 'Settings',
   //   path: '/settings',
