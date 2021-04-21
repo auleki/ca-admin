@@ -4,6 +4,9 @@ import {
   HiOutlineBadgeCheck
 } from 'react-icons/hi'
 
+import * as FcIcon from 'react-icons/fc'
+import * as FiIcon from 'react-icons/fi'
+
 import {
   AiOutlineTrophy,
   AiOutlineClockCircle,
@@ -36,10 +39,13 @@ export const fonts = {
 }
 
 export const icons = {
-  user: <HiOutlineUser />,
+  user: <FiIcon.FiUser />,
   email: <HiOutlineMail />,
   badge: <HiOutlineBadgeCheck />,
   victory: <AiOutlineTrophy />,
   time: <AiOutlineClockCircle />,
-  image: <AiOutlinePicture />
+  image: <AiOutlinePicture />,
+  login: <FiIcon.FiLogIn />,
+  lock: <FcIcon.FcLock />,
+  businessMan: <FcIcon.FcBusinessman />
 }

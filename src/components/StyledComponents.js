@@ -374,7 +374,7 @@ export const ClothCard = styled.div(
 )
 
 export const Button = styled.div(
-  ({ color, size }) => css`
+  ({ color, size, noRotate }) => css`
     border: 0;
     outline: 0;
     padding: 1em 1.5em;
@@ -382,7 +382,7 @@ export const Button = styled.div(
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: .5em;
+    gap: 0.5em;
     border-radius: 0.2em;
     background: ${colors.orange};
     letter-spacing: 0.05em;
@@ -414,7 +414,7 @@ export const Button = styled.div(
       }
 
       svg {
-        transform: scale(1.9) rotate(-90deg);
+        transform: scale(1.9) ${noRotate ? '' : 'rotate(-90deg)'};
       }
     }
   `
@@ -472,3 +472,30 @@ export const IOS_SWITCH = withStyles(theme => ({
     />
   )
 })
+
+export const FormStyle = styled.form(
+  ({ color, size, full }) => css`
+    display: flex;
+    flex-direction: column;
+    width: ${full ? '100%' : '35%'};
+    margin: 0 auto;
+    margin-top: 10%;
+    /* background: ${colors.black}; */
+
+    .formHeader {
+      font-family: ${fonts.ibmPlex};
+      font-size: 1.3em;
+      color: ${colors.orange};
+    }
+
+    .formGroup {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1em;
+      
+      label {
+        padding: .5em 0;
+      }
+    }
+  `
+)
