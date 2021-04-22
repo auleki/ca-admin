@@ -41,7 +41,6 @@ const Login = ({ setUser }) => {
   - place expiry on jwt tokens
   
   */
-
   async function saveTokenToStorage (token) {
     if (!localStorage.getItem('token')) {
       let stringifiedToken = JSON.stringify(token)
@@ -55,8 +54,10 @@ const Login = ({ setUser }) => {
     setLoading(true)
     if (username && password.length > 5 && password === 'breach') {
       const userInfo = { username, password }
-      const url = 'http://localhost:6500/api/admin/login'
-      const { data } = await axios.post(url, userInfo)
+      const url =
+        'https://afternoon-chamber-08446.herokuapp.com/api/admin/login'
+      const localUrl = 'http://localhost:6500/api/admin/login'
+      const { data } = await axios.post(localUrl, userInfo)
       await saveTokenToStorage(data)
       console.table(data)
       setUser(data.username)
@@ -81,7 +82,9 @@ const Login = ({ setUser }) => {
           <h2>Admin Login</h2>
         </div>
         <div className='formGroup'>
-          <label htmlFor='username'>{icons.user} Username</label>
+          <label htmlFor='username'>
+            {icons.user} <span>Username</span>
+          </label>
           <input
             autoFocus
             type='text'
@@ -91,7 +94,9 @@ const Login = ({ setUser }) => {
           />
         </div>
         <div className='formGroup'>
-          <label htmlFor='password'>{icons.lock} Password</label>
+          <label htmlFor='password'>
+            {icons.lockColored} <span>Password</span>
+          </label>
           <input
             type='password'
             onChange={passwordInput}

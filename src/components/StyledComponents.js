@@ -14,6 +14,12 @@ export const PageWrap = styled.div(
     overflow-y: scroll;
     padding: 0 1em;
 
+    .cardRow {
+      display: flex;
+      /* gap: 1em; */
+      justify-content: space-between;
+    }
+
     .flex {
       display: flex;
       justify-content: space-between;
@@ -544,6 +550,14 @@ export const FormStyle = styled.form(
       
       label {
         padding: .5em 0;
+        display: flex;
+        align-items: center;
+        gap: .5em;
+        svg {
+          padding: .5em .5em;
+          background: ${colors.gray};
+          border-radius: 100px;
+        }
       }
     }
   `
@@ -599,6 +613,31 @@ export const ErrorStyle = styled.div(
   `
 )
 
+export const MiniCard = styled.div(
+  ({ bgColor, pColor }) => css`
+    height: 100%;
+    width: 10em;
+    padding: 1em;
+    font-size: 1.3em;
+    font-family: ${fonts.quickSand};
+    text-align: center;
+    border-radius: 0.1em;
+    color: ${colors.lightDark};
+    border-bottom: 0.2em solid ${colors.lightDark};
+    background: ${colors.gray};
+
+    p {
+      background: ${pColor || colors.black};
+      color: ${colors.white};
+      height: 2em;
+      width: 2em;
+      border-radius: 0.1em;
+      align-items: center;
+      justify-content: center;
+      display: inline-flex;
+    }
+  `
+)
 // .errorMsg {
 //   padding: .5em 0;
 //   margin-bottom: 1em;
