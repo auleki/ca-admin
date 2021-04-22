@@ -6,7 +6,9 @@ import {
   PageWrap,
   ErrorStyle
 } from '../../components/StyledComponents'
-
+import axios from 'axios'
+// import Wp1 from '../../assets/bg-1.jpg'
+// src/assets/bg-1.jpg
 const ErrorComp = ({ error, setError }) => {
   return (
     <ErrorStyle>
@@ -21,10 +23,13 @@ const ErrorComp = ({ error, setError }) => {
 const Login = ({ setUser }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const usernameInput = e => setUsername(e.target.value)
   const passwordInput = e => setPassword(e.target.value)
+  const Wp1 =
+    'https://res.cloudinary.com/dyj6pqx6d/image/upload/v1619087696/bg-1_okil1k.jpg'
 
   /*
 
@@ -36,17 +41,38 @@ const Login = ({ setUser }) => {
   - place expiry on jwt tokens
   
   */
+  async function saveTokenToStorage (token) {
+    if (!localStorage.getItem('token')) {
+      let stringifiedToken = JSON.stringify(token)
+      localStorage.setItem('token', stringifiedToken)
+    }
+    localStorage.removeItem('token')
+  }
 
   const loginAdmin = async e => {
     e.preventDefault()
-
-    if (username && password.length > 5) {
-      const user = { username, password }
-      setUser(user)
-      // console.table(user)
-      alert('You have successfully logged in')
+    setLoading(true)
+    if (username && password.length > 5 && password === 'breach') {
+      const userInfo = { username, password }
+      const url =
+        'https://afternoon-chamber-08446.herokuapp.com/api/admin/login'
+      const localUrl = 'http://localhost:6500/api/admin/login'
+      const { data } = await axios.post(localUrl, userInfo)
+      await saveTokenToStorage(data)
+      console.table(data)
+      setUser(data.username)
+      setLoading(false)
     }
-    setError('Both fields need to be filled')
+
+    if (!username || !password) {
+      setLoading(false)
+      setError('Both fields need to be filled')
+    }
+
+    if (password !== 'breach') {
+      setLoading(false)
+      setError('username or password is incorrect')
+    }
   }
 
   return (
@@ -56,7 +82,9 @@ const Login = ({ setUser }) => {
           <h2>Admin Login</h2>
         </div>
         <div className='formGroup'>
-          <label htmlFor='username'>{icons.user} Username</label>
+          <label htmlFor='username'>
+            {icons.user} <span>Username</span>
+          </label>
           <input
             autoFocus
             type='text'
@@ -66,7 +94,9 @@ const Login = ({ setUser }) => {
           />
         </div>
         <div className='formGroup'>
-          <label htmlFor='password'>{icons.lockColored} Password</label>
+          <label htmlFor='password'>
+            {icons.lockColored} <span>Password</span>
+          </label>
           <input
             type='password'
             onChange={passwordInput}
@@ -76,9 +106,15 @@ const Login = ({ setUser }) => {
         </div>
         {error && <ErrorComp error={error} setError={setError} />}
         <div className='formGroup'>
-          <Button noRotate onClick={loginAdmin}>
-            <span>Login</span>
-            {icons.login}
+          <Button noRotate onClick={loginAdmin} loading={loading}>
+            {loading ? (
+              <span className='button_icon'>{icons.loading}</span>
+            ) : (
+              <div className='flex'>
+                <span>Login</span>
+                <span className='button_icon'>{icons.login}</span>
+              </div>
+            )}
           </Button>
         </div>
       </FormStyle>

@@ -6,13 +6,30 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 
-export const PageWrap = styled.div`
-  background: ${colors.white};
-  height: 100vh;
-  font-family: ${fonts.main};
-  overflow-y: scroll;
-  padding: 0 1em;
-`
+export const PageWrap = styled.div(
+  ({ bg }) => css`
+    background: ${bg ? 'url(bg)' : colors.white};
+    height: 100vh;
+    font-family: ${fonts.main};
+    overflow-y: scroll;
+    padding: 0 1em;
+
+    .cardRow {
+      display: flex;
+      /* gap: 1em; */
+      justify-content: space-between;
+    }
+
+    .flex {
+      display: flex;
+      justify-content: space-between;
+
+      .button_icon:nth-child(2) {
+        margin-left: 0.5em;
+      }
+    }
+  `
+)
 
 export const AppWrap = styled.div(
   ({ color }) => css`
@@ -373,8 +390,18 @@ export const ClothCard = styled.div(
   `
 )
 
-export const Button = styled.div(
-  ({ color, size, noRotate }) => css`
+const Spin = keyframes`
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+`
+
+export const Button = styled.button(
+  ({ color, size, noRotate, loading }) => css`
     border: 0;
     outline: 0;
     padding: 1em 1.5em;
@@ -397,11 +424,26 @@ export const Button = styled.div(
       font-weight: 600;
     }
 
+    .button_icon {
+      /* font-size: 1em; */
+      display: flex;
+      align-items: center;
+      /* animation: ${loading ? Spin : ''} 800ms infinite; */
+      animation: ${
+        loading
+          ? css`
+              ${Spin} 800ms infinite
+            `
+          : 'none'
+      }
+    }
+
     svg {
       transition: 200ms ease-out;
     }
 
-    &:hover {
+    &:hover,
+    &:focus {
       background: ${colors.altWhite};
       color: ${colors.orange};
       cursor: pointer;
@@ -414,8 +456,12 @@ export const Button = styled.div(
       }
 
       svg {
-        transform: scale(1.9) ${noRotate ? '' : 'rotate(-90deg)'};
+        transform: scale(1.6) ${noRotate ? '' : 'rotate(-90deg)'};
       }
+    }
+
+    &:active {
+      transform: translateY(1em);
     }
   `
 )
@@ -504,6 +550,14 @@ export const FormStyle = styled.form(
       
       label {
         padding: .5em 0;
+        display: flex;
+        align-items: center;
+        gap: .5em;
+        svg {
+          padding: .5em .5em;
+          background: ${colors.gray};
+          border-radius: 100px;
+        }
       }
     }
   `
@@ -557,12 +611,37 @@ export const ErrorStyle = styled.div(
       }
     }
   `
-
-  // .errorMsg {
-  //   padding: .5em 0;
-  //   margin-bottom: 1em;
-  //   border-radius: 1em;
-  //   background: ${colors.red};
-  //   text-align: center
-  // }
 )
+
+export const MiniCard = styled.div(
+  ({ bgColor, pColor }) => css`
+    height: 100%;
+    width: 10em;
+    padding: 1em;
+    font-size: 1.3em;
+    font-family: ${fonts.quickSand};
+    text-align: center;
+    border-radius: 0.1em;
+    color: ${colors.lightDark};
+    border-bottom: 0.2em solid ${colors.lightDark};
+    background: ${colors.gray};
+
+    p {
+      background: ${pColor || colors.black};
+      color: ${colors.white};
+      height: 2em;
+      width: 2em;
+      border-radius: 0.1em;
+      align-items: center;
+      justify-content: center;
+      display: inline-flex;
+    }
+  `
+)
+// .errorMsg {
+//   padding: .5em 0;
+//   margin-bottom: 1em;
+//   border-radius: 1em;
+//   background: ${colors.red};
+//   text-align: center
+// }

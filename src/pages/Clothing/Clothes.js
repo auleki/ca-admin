@@ -109,7 +109,7 @@ const Clothes = () => {
         setClothing(data)
         console.log(data)
       } catch (error) {
-        setPageError(true)
+        // setPageError(true)
         console.error(error)
       }
     }

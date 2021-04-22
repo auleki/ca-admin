@@ -11,7 +11,8 @@ import {
   AiOutlineTrophy,
   AiOutlineClockCircle,
   AiOutlinePicture,
-  AiOutlineClose
+  AiOutlineClose,
+  AiOutlineLoading
 } from 'react-icons/ai'
 
 export const colors = {
@@ -50,5 +51,6 @@ export const icons = {
   lock: <FiIcon.FiLock />,
   lockColored: <FcIcon.FcLock />,
   businessMan: <FcIcon.FcBusinessman />,
-  close: <AiOutlineClose />
+  close: <AiOutlineClose />,
+  loading: <AiOutlineLoading />
 }
