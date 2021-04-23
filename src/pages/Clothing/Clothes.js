@@ -135,7 +135,7 @@ const Clothes = () => {
   if (clothing.length === 0) {
     return (
       <PageWrap>
-        <h2>Loading...</h2>
+        <h2>Getting Clothes {icons.time}</h2>
       </PageWrap>
     )
   }

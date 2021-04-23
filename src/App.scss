@@ -1,3 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=ABeeZee&family=Asap&family=Maven+Pro&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Quicksand&family=RocknRoll+One&display=swap');
 
+.App {
+  height: 100vh;
+  overflow: hidden;
+}
+
+header {
+  height: 2em;
+  padding: 2.5em;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+
+  svg {
+    font-size: 1.5em;
+    color: #fff;
+    transition: 300ms ease-out;
+
+    &:hover {
+      color: #A7C957;
+      cursor: pointer;
+    }
+  }
+}
+

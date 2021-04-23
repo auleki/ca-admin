@@ -12,7 +12,7 @@ export const PageWrap = styled.div(
     height: 100vh;
     font-family: ${fonts.main};
     overflow-y: scroll;
-    padding: 0 1em;
+    padding: 0 3em;
 
     .cardRow {
       display: flex;
@@ -33,8 +33,9 @@ export const PageWrap = styled.div(
 
 export const AppWrap = styled.div(
   ({ color }) => css`
-    display: grid;
-    grid-template-columns: 250px 3.5fr;
+    /* display: flex; */
+    justify-content: space-evenly;
+    /* grid-template-columns: 250px 3.5fr; */
     background: ${colors.black};
     width: 100%;
     height: 100vh;
@@ -50,6 +51,7 @@ export const Nav = styled.div`
   display: flex;
   /* position: fixed; */
   left: 0;
+  width: 100px;
   justify-content: flex-start;
   padding-top: 2em;
   align-items: center;
@@ -83,26 +85,113 @@ export const BadgeText = styled.span(
 export const SideBarNav = styled.div(
   ({ sidebar }) => css`
     background: #1a1a1a;
-    /* background: #d62828; */
-    width: 250px;
-    height: 100vh;
-    display: flex;
-    /* align-items: center; */
-    justify-content: center;
+    width: 250px;  
     color: #fff;
-    position: fixed;
-    top: 0;
+    position: relative;
+    /* position: fixed; */
+    /* top: 0; */
     /* padding-top: 7%; */
-    left: ${sidebar ? '0' : '-100%'};
+    /* left: ${sidebar ? '0' : '-100%'}; */
     transition: 350ms ease-in;
-    z-index: 10;
+    /* z-index: 10; */
+
+    .sidenav {
+      /* width: 350px; */
+      background: #011627;
+      position: absolute;
+      height: 95vh;
+      padding: 0;
+      left: -100%;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      font-family: $secondary;
+      z-index: 50;
+      transition: 200ms ease-in;
+
+
+      &.active {
+        left: 0;
+      }
+    }
+  `
+)
+
+export const SideNavStyle = styled.div(
+  ({ compact, active }) => css`
+    width: 240px;
+    /* height: 86vh; */
+    height: 100vh;
+    color: ${colors.altWhite};
+    position: absolute;
+    background: ${colors.black};
+    top: 0;
+    transition: 300ms ease-in;
+    left: ${active ? '0' : '-100%'};
+
+    .sidenav {
+      background: ${colors.red};
+      padding: 0;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      font-family: $secondary;
+      z-index: 50;
+      transition: 200ms ease-in;
+
+      &.active {
+        left: 0;
+      }
+    }
+
+    .navigation {
+      list-style-type: none;
+      overflow-x: hidden;
+      font-family: ${fonts.primary};
+
+      a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+
+        color: ${colors.white};
+
+        &:hover {
+          a {
+            color: ${colors.white};
+          }
+        }
+      }
+
+      li {
+        padding: 1em 1em;
+        width: 100%;
+        display: flex;
+        gap: 0.5em;
+        align-items: center;
+        font-size: 1.1em;
+        border-top-left-radius: 0.5em;
+        border-bottom-left-radius: 0.5em;
+
+        span {
+          transition: 150ms ease-in;
+        }
+
+        &:hover {
+          color: ${colors.altWhite};
+          background: ${colors.red};
+
+          span {
+            padding: 0 0.8em;
+          }
+        }
+      }
+    }
   `
 )
 
 export const SidebarWrap = styled.div`
   width: 100%;
-  padding-top: 5%;
-  z-index: 100;
+  /* padding-top: 5%; */
+  /* z-index: 100; */
 `
 
 export const SidebarLink = styled(Link)`

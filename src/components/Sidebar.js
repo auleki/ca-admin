@@ -7,23 +7,18 @@ import { SidebarData } from './SidebarData'
 import SubMenu from './SubMenu'
 import { Nav, NavIcon, SideBarNav, SidebarWrap } from './StyledComponents'
 
-const Sidebar = () => {
+const Sidebar = ({ visible, setOpen }) => {
   const [sidebar, setSidebar] = useState(false)
 
   const showSidebar = () => setSidebar(!sidebar)
 
   return (
     <>
-      <Nav>
-        <NavIcon to='#' onClick={showSidebar}>
-          <FaIcons.FaArrowCircleRight />
-        </NavIcon>
-      </Nav>
-      <SideBarNav sidebar={sidebar}>
-        <SidebarWrap>
-          <NavIcon to='#'>
-            <FaIcons.FaWindowClose onClick={showSidebar} />
-          </NavIcon>
+      <SideBarNav
+        className={visible ? 'sidenav active' : 'sidenav'}
+        sidebar={sidebar}
+      >
+        <SidebarWrap onClick={() => setOpen(false)}>
           {SidebarData.map((item, index) => (
             <SubMenu item={item} key={index} />
           ))}
