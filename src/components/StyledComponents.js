@@ -12,6 +12,7 @@ export const PageWrap = styled.div(
     height: 100vh;
     font-family: ${fonts.main};
     overflow-y: scroll;
+    z-index: 50;
     padding: 0 3em;
 
     .cardRow {
@@ -27,6 +28,12 @@ export const PageWrap = styled.div(
       .button_icon:nth-child(2) {
         margin-left: 0.5em;
       }
+    }
+
+    .uploadArea .upload {
+      position: absolute;
+      right: 5em;
+      top: 2em;
     }
   `
 )
@@ -85,15 +92,11 @@ export const BadgeText = styled.span(
 export const SideBarNav = styled.div(
   ({ sidebar }) => css`
     background: #1a1a1a;
-    width: 250px;  
+    width: 250px;
     color: #fff;
     position: relative;
-    /* position: fixed; */
-    /* top: 0; */
-    /* padding-top: 7%; */
-    /* left: ${sidebar ? '0' : '-100%'}; */
+    z-index: 1000;
     transition: 350ms ease-in;
-    /* z-index: 10; */
 
     .sidenav {
       /* width: 350px; */
@@ -107,7 +110,6 @@ export const SideBarNav = styled.div(
       font-family: $secondary;
       z-index: 50;
       transition: 200ms ease-in;
-
 
       &.active {
         left: 0;
@@ -513,6 +515,11 @@ export const Button = styled.button(
       font-weight: 600;
     }
 
+    .upload {
+      position: absolute;
+      color: ${colors.blue};
+    }
+    
     .button_icon {
       /* font-size: 1em; */
       display: flex;
@@ -647,6 +654,13 @@ export const FormStyle = styled.form(
           background: ${colors.gray};
           border-radius: 100px;
         }
+      }
+
+      input {
+        outline: 0;
+        border: 0;
+        padding: .5em 1em;
+        background: ${colors.gray};
       }
     }
   `

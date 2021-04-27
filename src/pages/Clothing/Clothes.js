@@ -4,7 +4,8 @@ import {
   ClothCard,
   ClothingCard,
   Button,
-  IOS_SWITCH
+  IOS_SWITCH,
+  FormStyle
 } from '../../components/StyledComponents'
 import { icons } from '../../components/constants'
 import CLOTHES from '../../assets/clothes.json'
@@ -12,12 +13,19 @@ import BasicTable from '../../components/BasicTable'
 import { fetchData } from '../../services/operations'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import axios from 'axios'
 import { AiOutlineConsoleSql, AiOutlineSetting } from 'react-icons/ai'
 import { formatToComma } from '../../services/operations'
+import { FormLabel } from '@material-ui/core'
 
 const ClothingArea = ({ toggleStock, clothing }) => {
+  // console.log(clothing)
+
+  const [updatedPrice, setUpdatedPrice] = useState(0)
+  const [editPrice, setEditPrice] = useState(false)
+
   return (
-    <ClothingCard className='container'>
+    <ClothingCard className='container' key={clothing.name}>
       {/* <BasicTable COLUMNS={columns} DATA={clothes} /> */}
       {clothing.map((clothes, i) => (
         <div>
@@ -32,7 +40,7 @@ const ClothingArea = ({ toggleStock, clothing }) => {
                   <img src={cloth.imageUrl} alt='' />
                 </div>
                 <p className='name'>{cloth.name}</p>
-                <p className='price'>₦{formatToComma(cloth.price)}</p>
+                {/* <p className='price'>₦{formatToComma(cloth.price)}</p> */}
                 {/* <p>{cloth.inStock ? 'We get' : 'E done finish'}</p> */}
                 <div className='cardSwitch'>
                   <span>FINISHED</span>
@@ -40,7 +48,7 @@ const ClothingArea = ({ toggleStock, clothing }) => {
                     control={
                       <IOS_SWITCH
                         checked={cloth.inStock}
-                        onChange={() => toggleStock(cloth.name)}
+                        onChange={() => toggleStock(cloth.id, cloth.inStock)}
                         // label='In Stock'
                       />
                     }
@@ -59,6 +67,55 @@ const ClothingArea = ({ toggleStock, clothing }) => {
         </div>
       ))}
     </ClothingCard>
+  )
+}
+
+const UploadForm = () => {
+  // name, price, imageUrl, instock
+
+  const [name, setName] = useState('')
+  const [price, setPrice] = useState(0)
+  const [imageUrl, setImageUrl] = useState('')
+  const [inStock, setInStock] = useState(true)
+
+  const nameInput = e => setName(e.target.value)
+  const priceInput = ({ target }) => setPrice(target.value)
+
+  async function uploadCloth (e) {
+    e.preventDefault()
+    console.log('Cloth Uploaded')
+  }
+
+  return (
+    <div>
+      <FormStyle onSubmit={uploadCloth}>
+        <div className='formGroup'>
+          <label htmlFor='name'>Cloth Name</label>
+          <input
+            autoFocus
+            type='text'
+            onChange={e => setName(e.target.value)}
+            value={name}
+            required
+          />
+        </div>
+        <div className='formGroup'>
+          <label htmlFor='name'>Price</label>
+          <input type='number' onChange={nameInput} value={name} required />
+        </div>
+        <div className='formGroup'>
+          <label htmlFor='name'>Image</label>
+          <input type='file' onChange={nameInput} value={name} required />
+        </div>
+        <div className='formGroup'>
+          <label htmlFor='name'>Available</label>
+          <input type='radio' value={inStock} />
+        </div>
+        <div className='formGroup'>
+          <Button>Save Clothing</Button>
+        </div>
+      </FormStyle>
+    </div>
   )
 }
 
@@ -116,14 +173,17 @@ const Clothes = () => {
     loadClothes()
   }, [])
 
-  // console.log(clothing.products)
-
-  function toggleStock (name) {
-    console.log(`${name} availablity toggled`)
-    // setAvailable(!available)
+  async function toggleStock (id, isInStock) {
+    // id.trim()
+    const idTrim = id.replace(/\s+/g, '')
+    const url = `http://localhost:6500/api/clothing/update/${idTrim}`
+    console.log('ID(REACT):', idTrim)
+    const updateData = { inStock: isInStock }
+    const res = await axios.patch(url, updateData)
+    // console.log(`${id} availablity toggled`)
+    // return res
   }
   // LOAD BASE CASES!
-
   if (pageError) {
     return (
       <PageWrap>
@@ -150,7 +210,11 @@ const Clothes = () => {
           <h1>Error Loading Page...</h1>
         </div>
       ) : (
-        <ClothingArea toggleStock={toggleStock} clothing={clothing} />
+        <div className='uploadArea'>
+          <UploadForm />
+          <Button className='upload'>Upload Cloth</Button>
+          <ClothingArea toggleStock={toggleStock} clothing={clothing} />
+        </div>
       )}
     </PageWrap>
   )
