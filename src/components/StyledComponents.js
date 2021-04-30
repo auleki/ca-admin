@@ -430,6 +430,12 @@ export const ClothCard = styled.div(
       border-radius: 3px;
     }
 
+    .priceSection {
+      button {
+        margin: 0 auto;
+      }
+    }
+    
     .price {
       background: ${colors.altWhite};
       color: ${colors.black};
@@ -476,6 +482,10 @@ export const ClothCard = styled.div(
 
       .image {
         /* background: ${colors.lightOrange}; */
+      }
+
+      input {
+        background: ${colors.gray};
       }
     }
   `
@@ -544,7 +554,7 @@ export const Button = styled.button(
       color: ${colors.orange};
       cursor: pointer;
       border-bottom: 0.2em solid ${colors.red};
-      border-radius: 0;
+      /* border-radius: 0; */
 
       span {
         transform: translateX(-0.4em);
@@ -557,7 +567,7 @@ export const Button = styled.button(
     }
 
     &:active {
-      transform: translateY(1em);
+      transform: translateY(.5em);
     }
   `
 )
@@ -615,6 +625,23 @@ export const IOS_SWITCH = withStyles(theme => ({
   )
 })
 
+const FadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`
+
+export const Box = styled.div(
+  ({ hide }) => css`
+    display: ${hide ? 'none' : 'block'};
+    animation: ${FadeIn} 800ms;
+  `
+)
+
 export const FormStyle = styled.form(
   ({ color, size, full }) => css`
     display: flex;
@@ -645,7 +672,7 @@ export const FormStyle = styled.form(
       margin-bottom: 1em;
       
       label {
-        padding: .5em 0;
+        padding: 1em 0;
         display: flex;
         align-items: center;
         gap: .5em;
@@ -656,11 +683,16 @@ export const FormStyle = styled.form(
         }
       }
 
-      input {
+      input, select {
         outline: 0;
         border: 0;
-        padding: .5em 1em;
+        padding: 1em .5em;
+        border-radius: .2em;
         background: ${colors.gray};
+      }
+
+      select {
+        padding: 1em .5;
       }
     }
   `
@@ -741,10 +773,16 @@ export const MiniCard = styled.div(
     }
   `
 )
-// .errorMsg {
-//   padding: .5em 0;
-//   margin-bottom: 1em;
-//   border-radius: 1em;
-//   background: ${colors.red};
-//   text-align: center
-// }
+
+export const InputGroup = styled.div(
+  ({ size }) => css`
+    display: flex;
+
+    input {
+      padding: 0.2em 0 0 1em;
+      background: ${colors.white};
+      outline: 0;
+      border: 0;
+    }
+  `
+)

@@ -5,8 +5,16 @@ import {
   ClothingCard,
   Button,
   IOS_SWITCH,
-  FormStyle
+  FormStyle,
+  Box,
+  InputGroup
 } from '../../components/StyledComponents'
+import {
+  Image,
+  Video,
+  Transformation,
+  CloudinaryContext
+} from 'cloudinary-react'
 import { icons } from '../../components/constants'
 import CLOTHES from '../../assets/clothes.json'
 import BasicTable from '../../components/BasicTable'
@@ -24,6 +32,10 @@ const ClothingArea = ({ toggleStock, clothing }) => {
   const [updatedPrice, setUpdatedPrice] = useState(0)
   const [editPrice, setEditPrice] = useState(false)
 
+  const togglePriceEdit = () => setEditPrice(!editPrice)
+
+  console.log('CURRENT CLOTHING:', clothing)
+
   return (
     <ClothingCard className='container' key={clothing.name}>
       {/* <BasicTable COLUMNS={columns} DATA={clothes} /> */}
@@ -40,7 +52,7 @@ const ClothingArea = ({ toggleStock, clothing }) => {
                   <img src={cloth.imageUrl} alt='' />
                 </div>
                 <p className='name'>{cloth.name}</p>
-                {/* <p className='price'>₦{formatToComma(cloth.price)}</p> */}
+                <p className='price'>₦{formatToComma(cloth.price)}</p>
                 {/* <p>{cloth.inStock ? 'We get' : 'E done finish'}</p> */}
                 <div className='cardSwitch'>
                   <span>FINISHED</span>
@@ -55,11 +67,18 @@ const ClothingArea = ({ toggleStock, clothing }) => {
                   />
                   <span>IN STOCK</span>
                 </div>
-                <div>
-                  <Button>
-                    <span>Change Price</span>
-                    <AiOutlineSetting />
-                  </Button>
+                <div className='priceSection'>
+                  {editPrice ? (
+                    <InputGroup>
+                      <input type='number' placeholder='N 5,000' />
+                      <Button onClick={togglePriceEdit}>Save Price</Button>
+                    </InputGroup>
+                  ) : (
+                    <Button onClick={togglePriceEdit}>
+                      <span>Change Price</span>
+                      <AiOutlineSetting />
+                    </Button>
+                  )}
                 </div>
               </ClothCard>
             ))}
@@ -70,52 +89,91 @@ const ClothingArea = ({ toggleStock, clothing }) => {
   )
 }
 
-const UploadForm = () => {
+const UploadForm = ({ visible }) => {
   // name, price, imageUrl, instock
-
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
-  const [imageUrl, setImageUrl] = useState('')
+  const [isFileSelected, setIsFileSelected] = useState(false)
   const [inStock, setInStock] = useState(true)
-
-  const nameInput = e => setName(e.target.value)
-  const priceInput = ({ target }) => setPrice(target.value)
+  const [category, setCategory] = useState()
+  const [image, setImage] = useState(null)
 
   async function uploadCloth (e) {
     e.preventDefault()
-    console.log('Cloth Uploaded')
+    const localUrl = 'http://localhost:6500/api/cloth'
+    const newCloth = { name, price, image, category, inStock }
+    const savedCloth = await axios.post(localUrl, newCloth)
+    console.log('PAYLOAD:', newCloth)
+  }
+
+  const takeImage = e => {
+    // console.log('INPUT CHECK', e.target.files[0])
+    setImage(e.target.files[0])
+    setIsFileSelected(true)
   }
 
   return (
-    <div>
-      <FormStyle onSubmit={uploadCloth}>
+    <Box hide={visible}>
+      <FormStyle onSubmit={uploadCloth} encType='multipart/form-data'>
         <div className='formGroup'>
-          <label htmlFor='name'>Cloth Name</label>
+          <label htmlFor='name'>Wear Name</label>
           <input
             autoFocus
             type='text'
             onChange={e => setName(e.target.value)}
             value={name}
+            placeholder='Santi Beachware'
             required
           />
         </div>
         <div className='formGroup'>
           <label htmlFor='name'>Price</label>
-          <input type='number' onChange={nameInput} value={name} required />
+          <input
+            type='number'
+            placeholder='N4,000'
+            onChange={e => setPrice(e.target.value)}
+            value={price}
+            required
+          />
+        </div>
+        <div className='formGroup'>
+          <label htmlFor='name'>Category</label>
+          <select value={category} onChange={e => setCategory(e.target.value)}>
+            <option value='Sweatshirts'>Sweatshirts</option>
+            <option value='Polos'>Polos</option>
+            <option value='T-Shirt'>T-Shirt</option>
+            <option value='Shorts'>Shorts</option>
+            <option value='Joggers'>Joggers</option>
+          </select>
         </div>
         <div className='formGroup'>
           <label htmlFor='name'>Image</label>
-          <input type='file' onChange={nameInput} value={name} required />
+          <input
+            type='file'
+            name='productImage'
+            onChange={takeImage}
+            required
+          />
         </div>
         <div className='formGroup'>
-          <label htmlFor='name'>Available</label>
-          <input type='radio' value={inStock} />
+          <label htmlFor='name'>In Stock</label>
+          <input type='radio' value={inStock} checked />
         </div>
         <div className='formGroup'>
-          <Button>Save Clothing</Button>
+          <Button>Upload Clothing</Button>
         </div>
+        {/* {category ? <p>Selected category: {category}</p> : null} */}
+        {/* {isFileSelected ? (
+          <div>
+            <p>Filename: {image.name}</p>
+            <p>File Type: {image.type}</p>
+            <p>File Size: {image.size}</p>
+          </div>
+        ) : (
+          <p>Pick a file to see info</p>
+        )} */}
       </FormStyle>
-    </div>
+    </Box>
   )
 }
 
@@ -123,39 +181,7 @@ const Clothes = () => {
   const [clothing, setClothing] = useState([])
   // const [available, setAvailable] = useState(true)
   const [pageError, setPageError] = useState(false)
-
-  const columns = [
-    {
-      Header: 'Image',
-      accessor: 'cloth_image',
-      icon: icons.image
-    },
-    {
-      Header: 'Section',
-      accessor: 'section',
-      icon: icons.image
-    },
-    {
-      Header: 'Brand Name',
-      accessor: 'cloth_name',
-      icon: icons.image
-    },
-    {
-      Header: 'Price',
-      accessor: 'price',
-      icon: icons.image
-    },
-    {
-      Header: 'In Stock',
-      accessor: 'in_stock',
-      icon: icons.image
-    },
-    {
-      Header: 'Delete',
-      accessor: 'remove_from_store',
-      icon: icons.image
-    }
-  ]
+  const [showForm, setShowForm] = useState(true)
 
   useEffect(() => {
     const loadClothes = async () => {
@@ -211,8 +237,10 @@ const Clothes = () => {
         </div>
       ) : (
         <div className='uploadArea'>
-          <UploadForm />
-          <Button className='upload'>Upload Cloth</Button>
+          <UploadForm visible={showForm} />
+          <Button className='upload' onClick={() => setShowForm(!showForm)}>
+            Add Cloth
+          </Button>
           <ClothingArea toggleStock={toggleStock} clothing={clothing} />
         </div>
       )}

@@ -81,9 +81,11 @@ const Login = ({ setUser }) => {
         </div>
         <div className='formGroup'>
           <label htmlFor='username'>
-            {icons.user} <span>Username</span>
+            {icons.user}
+            {/* <span>Username</span> */}
           </label>
           <input
+            placeholder="username"
             autoFocus
             type='text'
             onChange={usernameInput}
@@ -93,9 +95,11 @@ const Login = ({ setUser }) => {
         </div>
         <div className='formGroup'>
           <label htmlFor='password'>
-            {icons.lockColored} <span>Password</span>
+            {icons.lockColored}
+            {/* <span>Password</span> */}
           </label>
           <input
+            placeholder="password"
             type='password'
             onChange={passwordInput}
             value={password}
