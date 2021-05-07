@@ -16,6 +16,15 @@ export const fetchData = async url => {
   }
 }
 
+export const postData = async (url, data) => {
+  try {
+    // make sure admin has the right token to perform this action
+    return await axios.post(url, data)
+  } catch (error) {
+    throw Error('error while posting', error)
+  }
+}
+
 export const formatToComma = price =>
   price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 

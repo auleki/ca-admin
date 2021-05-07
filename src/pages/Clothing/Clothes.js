@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   PageWrap,
-  ClothCard,
+  StyleClothCard,
   ClothingCard,
   Button,
   IOS_SWITCH,
@@ -26,16 +26,66 @@ import { AiOutlineConsoleSql, AiOutlineSetting } from 'react-icons/ai'
 import { formatToComma } from '../../services/operations'
 import { FormLabel } from '@material-ui/core'
 
-const ClothingArea = ({ toggleStock, clothing }) => {
-  // console.log(clothing)
-
-  const [updatedPrice, setUpdatedPrice] = useState(0)
+const ClothCard = ({ cloth, toggleStock }) => {
+  // const [updatedPrice, setUpdatedPrice] = useState(0)
   const [editPrice, setEditPrice] = useState(false)
+  const [newPrice, setNewPrice] = useState(null)
 
   const togglePriceEdit = () => setEditPrice(!editPrice)
 
-  console.log('CURRENT CLOTHING:', clothing)
+  const takeNewPrice = e => setNewPrice(e.target.value)
 
+  const savePrice = async price => {
+    // setEditPrice(false)
+    // console.log('saving price')
+    const url = `http://localhost:6500/api/cloth/${cloth.id}`
+    console.log(url)
+    const result = await axios.post(url, price)
+    console.log('RESULT:', result)
+  }
+
+  return (
+    <StyleClothCard className='cloth'>
+      <div className='image'>
+        <img src={cloth.imageUrl} alt='' />
+      </div>
+      <p className='name'>{cloth.name}</p>
+      <p className='price'>₦{formatToComma(cloth.price)}</p>
+      <div className='cardSwitch'>
+        <span>FINISHED</span>
+        <FormControlLabel
+          control={
+            <IOS_SWITCH
+              checked={cloth.inStock}
+              onChange={() => toggleStock(cloth.id, cloth.inStock)}
+            />
+          }
+        />
+        <span>IN STOCK</span>
+      </div>
+      <div className='priceSection'>
+        {editPrice ? (
+          <InputGroup>
+            <input
+              type='number'
+              placeholder='New Amount'
+              value={newPrice}
+              onChange={takeNewPrice}
+            />
+            <Button onClick={price => savePrice(newPrice)}>Save Price</Button>
+          </InputGroup>
+        ) : (
+          <Button onClick={togglePriceEdit}>
+            <span>Change Price</span>
+            <AiOutlineSetting />
+          </Button>
+        )}
+      </div>
+    </StyleClothCard>
+  )
+}
+
+const ClothingArea = ({ toggleStock, clothing }) => {
   return (
     <ClothingCard className='container' key={clothing.name}>
       {/* <BasicTable COLUMNS={columns} DATA={clothes} /> */}
@@ -46,41 +96,7 @@ const ClothingArea = ({ toggleStock, clothing }) => {
           </div>
           <div className='clothing'>
             {clothes.products.map((cloth, i) => (
-              <ClothCard className='cloth'>
-                {/* <span>{cloth.imgageUrl}</span> */}
-                <div className='image'>
-                  <img src={cloth.imageUrl} alt='' />
-                </div>
-                <p className='name'>{cloth.name}</p>
-                <p className='price'>₦{formatToComma(cloth.price)}</p>
-                {/* <p>{cloth.inStock ? 'We get' : 'E done finish'}</p> */}
-                <div className='cardSwitch'>
-                  <span>FINISHED</span>
-                  <FormControlLabel
-                    control={
-                      <IOS_SWITCH
-                        checked={cloth.inStock}
-                        onChange={() => toggleStock(cloth.id, cloth.inStock)}
-                        // label='In Stock'
-                      />
-                    }
-                  />
-                  <span>IN STOCK</span>
-                </div>
-                <div className='priceSection'>
-                  {editPrice ? (
-                    <InputGroup>
-                      <input type='number' placeholder='N 5,000' />
-                      <Button onClick={togglePriceEdit}>Save Price</Button>
-                    </InputGroup>
-                  ) : (
-                    <Button onClick={togglePriceEdit}>
-                      <span>Change Price</span>
-                      <AiOutlineSetting />
-                    </Button>
-                  )}
-                </div>
-              </ClothCard>
+              <ClothCard cloth={cloth} toggleStock={toggleStock} />
             ))}
           </div>
         </div>
@@ -190,7 +206,7 @@ const Clothes = () => {
           'https://afternoon-chamber-08446.herokuapp.com/api/clothing'
         const { data } = await fetchData(clothUrl)
         setClothing(data)
-        console.log(data)
+        // console.log(data)
       } catch (error) {
         // setPageError(true)
         console.error(error)

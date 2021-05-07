@@ -6,6 +6,29 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 
+export const AltPageWrap = styled.div(
+  ({ bg }) => css`
+    height: 100%;
+
+    background: ${colors.white};
+    padding: 3em 3em 0;
+    overflow: auto;
+    position: relative;
+    top: 0;
+    margin-bottom: 5em;
+
+    .cardRow {
+      display: flex;
+      /* gap: 1em; */
+      justify-content: space-between;
+    }
+
+    .shiftDown {
+      margin: 4em 0 1em;
+    }
+  `
+)
+
 export const PageWrap = styled.div(
   ({ bg }) => css`
     background: ${bg ? 'url(bg)' : colors.white};
@@ -15,11 +38,9 @@ export const PageWrap = styled.div(
     z-index: 50;
     padding: 0 3em;
 
-    .cardRow {
-      display: flex;
-      /* gap: 1em; */
-      justify-content: space-between;
-    }
+    /* .container {
+      overflow-y: scroll;
+    } */
 
     .flex {
       display: flex;
@@ -413,7 +434,7 @@ export const ClothingCard = styled.div(
   `
 )
 
-export const ClothCard = styled.div(
+export const StyleClothCard = styled.div(
   ({ color, size }) => css`
     padding: 1em 1em;
     text-align: center;
@@ -686,7 +707,7 @@ export const FormStyle = styled.form(
       input, select {
         outline: 0;
         border: 0;
-        padding: 1em .5em;
+        padding: 1em 1em;
         border-radius: .2em;
         background: ${colors.gray};
       }
@@ -748,6 +769,20 @@ export const ErrorStyle = styled.div(
   `
 )
 
+const shockBounce = keyframes`
+	0% {
+		transform: translateY(-.2em);
+	}
+
+	60% {
+		transform: translateY(.2em);
+	}
+
+	100% {
+		transform: translateY(0em);
+	}
+`
+
 export const MiniCard = styled.div(
   ({ bgColor, pColor }) => css`
     height: 100%;
@@ -757,9 +792,10 @@ export const MiniCard = styled.div(
     font-family: ${fonts.quickSand};
     text-align: center;
     border-radius: 0.1em;
-    color: ${colors.lightDark};
+    color: ${colors.altWhite};
     border-bottom: 0.2em solid ${colors.lightDark};
-    background: ${colors.gray};
+    background: url('https://res.cloudinary.com/dyj6pqx6d/image/upload/v1614852691/checkadigs/dot-bg_uzhhlm.svg');
+    background-size: cover;
 
     p {
       background: ${pColor || colors.black};
@@ -771,6 +807,10 @@ export const MiniCard = styled.div(
       justify-content: center;
       display: inline-flex;
     }
+
+    &:hover {
+      animation: ${shockBounce} 1s 0;
+    }
   `
 )
 
@@ -781,6 +821,8 @@ export const InputGroup = styled.div(
     input {
       padding: 0.2em 0 0 1em;
       background: ${colors.white};
+      font-family: ${fonts.ibmPlex};
+      letter-spacing: 1px;
       outline: 0;
       border: 0;
     }
