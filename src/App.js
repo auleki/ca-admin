@@ -33,7 +33,9 @@ function App () {
       </header>
       <SideNav visible={open} setOpen={setOpen} />
       {/* <Sidebar visible={open} setOpen={setOpen} /> */}
-      {user ? <PageRoutes /> : <Login setUser={setUser} />}
+      {/* ENSURING AUTHENTICATION */}
+      <PageRoutes />
+      {/* {user ? <PageRoutes /> : <Login setUser={setUser} />} */}
     </div>
     // </AppWrap>
   )

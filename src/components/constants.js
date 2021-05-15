@@ -14,7 +14,9 @@ import {
   AiOutlineClose,
   AiOutlineLoading,
   AiOutlineUserAdd,
+  AiOutlinePlusSquare,
   AiOutlineSkin,
+  AiOutlinePlus,
   AiOutlineTags
 } from 'react-icons/ai'
 
@@ -62,5 +64,9 @@ export const icons = {
   subscribers: <AiOutlineUserAdd />,
   orders: <AiOutlineTags />,
   clothes: <AiOutlineSkin />,
-  overview: <GiIcons.GiDeadEye />
+  overview: <GiIcons.GiDeadEye />,
+  add: <AiOutlinePlusSquare />,
+  tick: <FiIcon.FiCheckSquare />,
+  cancelSquare: <FiIcon.FiXSquare />,
+  cancel: <FiIcon.FiX />
 }

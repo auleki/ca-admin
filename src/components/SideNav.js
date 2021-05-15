@@ -23,12 +23,12 @@ const SideNav = ({ visible, setOpen }) => {
             <span>Clothes</span>
           </li>
         </Link>
-        <Link to='/clothing/orders'>
+        {/* <Link to='/clothing/orders'>
           <li>
             {icons.orders}
             <span>Orders</span>
           </li>
-        </Link>
+        </Link> */}
         <Link to='/users/subscribers'>
           <li>
             {icons.subscribers}

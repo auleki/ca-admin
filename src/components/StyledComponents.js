@@ -19,7 +19,6 @@ export const AltPageWrap = styled.div(
 
     .cardRow {
       display: flex;
-      /* gap: 1em; */
       justify-content: space-between;
     }
 
@@ -36,11 +35,7 @@ export const PageWrap = styled.div(
     font-family: ${fonts.main};
     overflow-y: scroll;
     z-index: 50;
-    padding: 0 3em;
-
-    /* .container {
-      overflow-y: scroll;
-    } */
+    padding: 0 3em 1em;
 
     .flex {
       display: flex;
@@ -148,6 +143,7 @@ export const SideNavStyle = styled.div(
     position: absolute;
     background: ${colors.black};
     top: 0;
+    z-index: 400;
     transition: 300ms ease-in;
     left: ${active ? '0' : '-100%'};
 
@@ -372,8 +368,9 @@ export const Row = styled.div(
 export const IconButton = styled.button(
   ({ bgColor, outlined }) => css`
     /* height: 3em; */
-    padding: .8em 1.5em;
-    border-radius: 2px;
+    width: 100%;
+    padding: .5em;
+    /* border-radius: 2px; */
     background: ${outlined ? 'transparent' : colors.orange};
     border: 4px solid ${outlined ? colors.orange : 'transparent'};
     display: flex;
@@ -388,10 +385,14 @@ export const IconButton = styled.button(
       color: ${colors.black};
     } */
 
+    svg {
+        transition: 200ms ease-in;
+      }
+    
     &:hover {
-      background: ${outlined ? 'transparent' : colors.black};
+      background: ${outlined ? 'transparent' : colors.altWhite};
       cursor: pointer;
-      color: ${outlined ? colors.orange : colors.white};
+      color: ${outlined ? colors.orange : colors.orange};
       /* transform: translateY(.1em); */
       /* border: 4px solid ${outlined ? colors.black : colors.orange}; */
 
@@ -399,6 +400,10 @@ export const IconButton = styled.button(
         background: ${outlined ? colors.gray : colors.gray};
         color: ${colors.black};
         /* border: 4px solid ${colors.gray}; */
+      }
+
+      svg {
+        transform: scale(1.2);
       }
 
       span {
@@ -419,7 +424,8 @@ export const ClothingCard = styled.div(
   ({ size, color }) => css`
     
     /* background: ${colors.green}; */
-    margin-bottom: 4em;
+    margin: 2em 0 10em;
+    /* margin-bottom: 4em; */
     font-family: ${fonts.quickSand};
     .clothing {
       /* display: flex; */
@@ -430,6 +436,16 @@ export const ClothingCard = styled.div(
       /* flex-wrap: wrap; */
       justify-content: space-evenly;
       margin-bottom: 3em;
+    }
+
+    .error-section {
+      margin-top: 1em;
+      color: red;
+      padding: .5em 0;
+      text-transform: uppercase;
+      font-size: .9em;
+      font-weight: 600;
+      /* background: ${colors.black}; */
     }
   `
 )
@@ -449,6 +465,11 @@ export const StyleClothCard = styled.div(
       background: transparent;
       padding: 1.5em;
       border-radius: 3px;
+      img {
+        height: 10em;
+        width: 10em;
+        object-fit: cover;
+      }
     }
 
     .priceSection {
@@ -522,6 +543,28 @@ const Spin = keyframes`
   }
 `
 
+// export const IconButton = styled.button(
+//   ({ color }) => css`
+//     border: 0;
+//     outline: 0;
+//     padding: 1em 1.5em;
+//     font-family: ${fonts.quickSand};
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     color: ${colors.white};
+//     transition: 200ms ease-in-out;
+//     border-bottom: 0.2em solid transparent;
+
+//     &:hover,
+//     &:focus {
+//       svg {
+//         transform: scale(1.6) ${noRotate ? '' : 'rotate(-90deg)'};
+//       }
+//     }
+//   `
+// )
+
 export const Button = styled.button(
   ({ color, size, noRotate, loading }) => css`
     border: 0;
@@ -548,7 +591,7 @@ export const Button = styled.button(
 
     .upload {
       position: absolute;
-      color: ${colors.blue};
+      /* color: ${colors.blue}; */
     }
     
     .button_icon {
@@ -567,6 +610,7 @@ export const Button = styled.button(
 
     svg {
       transition: 200ms ease-out;
+      font-size: 1.3em;
     }
 
     &:hover,
@@ -658,8 +702,33 @@ const FadeIn = keyframes`
 
 export const Box = styled.div(
   ({ hide }) => css`
-    display: ${hide ? 'none' : 'block'};
+    display: ${hide ? 'block' : 'none'};
     animation: ${FadeIn} 800ms;
+    height: 100vh;
+    z-index: 400;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: ${colors.altWhite};
+
+    .close {
+      color: ${colors.red};
+      position: absolute;
+      right: 2em;
+      top: 2em;
+      height: 1em;
+      border-radius: 50%;
+      padding: 0.5em;
+      width: 1em;
+      transition: 200ms ease-in-out;
+
+      &:hover {
+        background: ${colors.orange};
+        cursor: pointer;
+        color: ${colors.altWhite};
+      }
+    }
   `
 )
 
@@ -791,10 +860,17 @@ export const MiniCard = styled.div(
     font-size: 1.3em;
     font-family: ${fonts.quickSand};
     text-align: center;
-    border-radius: 0.1em;
+    border-radius: 1em;
     color: ${colors.altWhite};
-    border-bottom: 0.2em solid ${colors.lightDark};
-    background: url('https://res.cloudinary.com/dyj6pqx6d/image/upload/v1614852691/checkadigs/dot-bg_uzhhlm.svg');
+    border: 0.15em solid transparent;
+    transition: transform 100ms ease-in, box-shadow 200ms ease-in,
+      background 300ms ease-in;
+    border-bottom: 0.15em solid ${colors.green};
+    background: linear-gradient(to right, #33333385, #33333370),
+      url('https://res.cloudinary.com/dyj6pqx6d/image/upload/v1621061901/asteroids_bwlczi.jpg');
+    box-shadow: 5px 1px 5px 0px rgba(131, 131, 131, 0.75);
+    -webkit-box-shadow: 5px 1px 5px 0px rgba(131, 131, 131, 0.75);
+    -moz-box-shadow: 5px 1px 5px 0px rgba(131, 131, 131, 0.75);
     background-size: cover;
 
     p {
@@ -809,7 +885,8 @@ export const MiniCard = styled.div(
     }
 
     &:hover {
-      animation: ${shockBounce} 1s 0;
+      transform: translateY(0.15em);
+      border: 0.15em solid ${colors.lightGreen};
     }
   `
 )

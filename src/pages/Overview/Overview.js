@@ -17,15 +17,13 @@ const Overview = () => {
       // const reqUrl = 'http://localhost:6500/api/orders'
       const { data } = await fetchData(reqUrl)
       setOrders(data)
-      // return data
-      console.log(data)
+      // console.log(data)
     }
     loadData()
   }, [])
 
   return (
     <AltPageWrap>
-      {/* <h2>Overview Page</h2> */}
       <div className='cardRow'>
         <MiniCard pColor={colors.darkBlue}>
           <h3>Orders</h3>
@@ -48,6 +46,7 @@ const Overview = () => {
 
       <div className='container shiftDown'>
         {/* <BasicTable COLUMNS={} DATA={data} /> */}
+        <h2>Recent Orders</h2>
         <AdvancedTable />
       </div>
     </AltPageWrap>
