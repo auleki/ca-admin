@@ -10,6 +10,7 @@ import {
   Box,
   InputGroup
 } from '../../components/StyledComponents'
+import { v4 as uuidv4 } from 'uuid'
 import {
   Image,
   Video,
@@ -26,33 +27,65 @@ import axios from 'axios'
 import { AiOutlineConsoleSql, AiOutlineSetting } from 'react-icons/ai'
 import { formatToComma } from '../../services/operations'
 import { FormLabel } from '@material-ui/core'
+import { generateClothId } from '../../services/operations'
 
-const ClothCard = ({ cloth, toggleStock }) => {
+const ClothCard = ({ cloth }) => {
   // const [updatedPrice, setUpdatedPrice] = useState(0)
   const [editPrice, setEditPrice] = useState(false)
-  const [newPrice, setNewPrice] = useState(0)
+  const [newPrice, setNewPrice] = useState('')
+  const [name, setName] = useState('')
+  const [stocked, setStocked] = useState(false)
+  const [price, setPrice] = useState('')
   const [error, setError] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
+  const [productId, setProductId] = useState('')
+
+  useEffect(() => {
+    setName(cloth.name)
+    setStocked(cloth.inStock)
+    setPrice(cloth.price)
+    setProductId(cloth.productId)
+  }, [])
 
   const togglePriceEdit = () => setEditPrice(!editPrice)
 
   const takeNewPrice = e => setNewPrice(e.target.value)
 
-  const savePrice = async (e, price) => {
-    // setEditPrice(false)
-    // console.log('saving price')
-    e.preventDefault()
-    if (newPrice === 0) {
-      setError(true)
-      setErrorMsg("The new price can't be ₦0")
-      return
+  async function toggleStock (id, isInStock) {
+    try {
+      const idTrim = id.replace(/\s+/g, '')
+      const url = `http://localhost:6500/api/cloth/${idTrim}`
+      console.log('ID(REACT):', idTrim)
+      const updateData = { inStock: !isInStock }
+      const response = await axios.patch(url, updateData)
+      console.log(response)
+      if (response.status === 200) {
+        setStocked(!isInStock)
+      }
+    } catch (err) {
+      throw error(err)
     }
-    const url = `http://localhost:6500/api/cloth/${cloth.id}`
-    console.log(url)
-    const result = await axios.patch(url, price)
-    setNewPrice(0)
-    console.log('RESULT:', result)
   }
+
+  const savePrice = async (e, price) => {
+    e.preventDefault()
+    if (!newPrice) {
+      setError(true)
+      setErrorMsg('The new price needs some value')
+    }
+    const url = `http://localhost:6500/api/cloth/${productId}`
+    console.log(url)
+    const toNumber = Number(price)
+    // const result = await axios.patch(url, toNumber)
+    setNewPrice('')
+    console.log(typeof toNumber, 'NUMBER: ', toNumber)
+    // console.log('RESULT:', result)
+  }
+
+  // useEffect(() => {
+  //   const productId = generateClothId()
+  //   console.log('RAN ID:', productId)
+  // }, [])
 
   const cancelEditPrice = () => {
     setError(false)
@@ -65,15 +98,15 @@ const ClothCard = ({ cloth, toggleStock }) => {
       <div className='image'>
         <img src={cloth.imageUrl} alt='' />
       </div>
-      <p className='name'>{cloth.name}</p>
-      <p className='price'>₦{formatToComma(cloth.price)}</p>
+      <p className='name'>{name}</p>
+      <p className='price'>₦{formatToComma(price)}</p>
       <div className='cardSwitch'>
         <span>FINISHED</span>
         <FormControlLabel
           control={
             <IOS_SWITCH
-              checked={cloth.inStock}
-              onChange={() => toggleStock(cloth.id, cloth.inStock)}
+              checked={stocked}
+              onChange={() => toggleStock(cloth.productId, cloth.inStock)}
             />
           }
         />
@@ -97,7 +130,12 @@ const ClothCard = ({ cloth, toggleStock }) => {
               >
                 <span>{icons.tick}</span>
               </IconButton>
-              <IconButton outlined noRotate onClick={cancelEditPrice}>
+              <IconButton
+                type='button'
+                outlined
+                noRotate
+                onClick={cancelEditPrice}
+              >
                 <span>{icons.cancel}</span>
               </IconButton>
               {/* </FormStyle> */}
@@ -115,14 +153,14 @@ const ClothCard = ({ cloth, toggleStock }) => {
   )
 }
 
-const ClothingArea = ({ toggleStock, clothing }) => {
+const ClothingArea = ({ clothing }) => {
   return (
     <ClothingCard className='container' key={clothing.name}>
       {/* <BasicTable COLUMNS={columns} DATA={clothes} /> */}
       <div className='clothing'>
         {clothing.map((cloth, i) => (
           <div>
-            <ClothCard cloth={cloth} toggleStock={toggleStock} key={cloth.id} />
+            <ClothCard cloth={cloth} key={cloth.id} />
           </div>
         ))}
       </div>
@@ -142,7 +180,15 @@ const UploadForm = ({ visible, setShowForm }) => {
   async function uploadCloth (e) {
     e.preventDefault()
     const localUrl = 'http://localhost:6500/api/cloth'
-    const newCloth = { name, price, image, category, inStock }
+    const newCloth = {
+      name,
+      price,
+      image,
+      category,
+      inStock,
+      productId: uuidv4()
+    }
+    console.log('NEW CLOTH!', newCloth)
     const savedCloth = await axios.post(localUrl, newCloth)
     console.log('PAYLOAD:', newCloth)
     console.table('RESPONSE: ', savedCloth)
@@ -245,13 +291,13 @@ const Clothes = () => {
   useEffect(() => {
     const loadClothes = async () => {
       try {
-        console.log('Clothes are being loaded')
+        // console.log('Clothes are being loaded')
         const clothUrl = 'http://localhost:6500/api/clothing'
         // 'https://afternoon-chamber-08446.herokuapp.com/api/clothing'
         const { data } = await fetchData(clothUrl)
         setClothing(data)
-        console.log('DATA:::HOME', data)
-        console.log('Clothes: ', clothing)
+        // console.log('DATA:::HOME', data)
+        // console.log('Clothes: ', clothing)
       } catch (error) {
         // setPageError(true)
         console.error(error)
@@ -259,17 +305,6 @@ const Clothes = () => {
     }
     loadClothes()
   }, [])
-
-  async function toggleStock (id, isInStock) {
-    // id.trim()
-    const idTrim = id.replace(/\s+/g, '')
-    const url = `http://localhost:6500/api/clothing/update/${idTrim}`
-    console.log('ID(REACT):', idTrim)
-    const updateData = { inStock: isInStock }
-    const res = await axios.patch(url, updateData)
-    console.log('RESULT: ', res)
-    // return res
-  }
 
   // LOAD BASE CASES!
   if (pageError) {
@@ -304,7 +339,7 @@ const Clothes = () => {
             <span>Add Cloth</span>
             {icons.add}
           </Button>
-          <ClothingArea toggleStock={toggleStock} clothing={clothing} />
+          <ClothingArea clothing={clothing} />
         </div>
       )}
     </PageWrap>

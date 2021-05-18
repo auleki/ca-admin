@@ -5,8 +5,9 @@ import {
   PageWrap,
   AltPageWrap
 } from '../../components/StyledComponents'
+import { v4 as uuidv4 } from 'uuid'
 import AdvancedTable from '../../components/AdvancedTable'
-import { fetchData } from '../../services/operations'
+import { fetchData, generateClothId } from '../../services/operations'
 
 const Overview = () => {
   const [orders, setOrders] = useState([])

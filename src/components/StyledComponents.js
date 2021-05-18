@@ -9,8 +9,7 @@ import Switch from '@material-ui/core/Switch'
 export const AltPageWrap = styled.div(
   ({ bg }) => css`
     height: 100%;
-
-    background: ${colors.white};
+    background: ${colors.darkGray};
     padding: 3em 3em 0;
     overflow: auto;
     position: relative;
@@ -24,6 +23,17 @@ export const AltPageWrap = styled.div(
 
     .shiftDown {
       margin: 4em 0 1em;
+    }
+
+    @media (min-width: 320px) and (max-width: 820px) {
+      .cardRow {
+        /* width: 80vh;
+        height: 100%; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
+      }
     }
   `
 )
@@ -860,7 +870,7 @@ export const MiniCard = styled.div(
     font-size: 1.3em;
     font-family: ${fonts.quickSand};
     text-align: center;
-    border-radius: 1em;
+    /* border-radius: 1em; */
     color: ${colors.altWhite};
     border: 0.15em solid transparent;
     transition: transform 100ms ease-in, box-shadow 200ms ease-in,
@@ -885,8 +895,17 @@ export const MiniCard = styled.div(
     }
 
     &:hover {
-      transform: translateY(0.15em);
+      /* transform: translateY(0.15em); */
       border: 0.15em solid ${colors.lightGreen};
+      z-index: 10;
+    }
+
+    @media (min-width: 550px) and (max-width: 890px) {
+      width: 60vh;
+    }
+
+    @media (min-width: 320px) and (max-width: 550px) {
+      width: 100%;
     }
   `
 )

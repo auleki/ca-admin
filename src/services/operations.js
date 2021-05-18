@@ -12,7 +12,7 @@ export const fetchData = async url => {
   try {
     return await axios.get(url)
   } catch (error) {
-    throw Error('error in fetching data', error)
+    console.error(error)
   }
 }
 
@@ -35,4 +35,9 @@ export const fetchAdmin = async (adminInfo, url) => {
   } catch (error) {
     throw Error(error)
   }
+}
+
+export const generateClothId = () => {
+  const random = Math.round(Math.random() * 100000)
+  return `00X${random}CA`
 }
