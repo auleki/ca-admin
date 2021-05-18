@@ -1,5 +1,5 @@
 import Subscribers from '../pages/Users/Subscribers'
-import Recent from '../pages/Clothing/Recent'
+// import Recent from '../pages/Clothing/Recent'
 import Orders from '../pages/Clothing/Orders'
 import Clothes from '../pages/Clothing/Clothes'
 import Winners from '../pages/Quiz/Winners'

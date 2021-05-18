@@ -1,14 +1,14 @@
-import { useMemo } from 'react'
+// import { useMemo } from 'react'
 import { useTable, useSortBy, usePagination } from 'react-table'
 // import MOCK_DATA from '../assets/MOCK_DATA.json'
-import { COLUMNS } from './Column'
+// import { COLUMNS } from './Column'
 import { IconButton, Row, TableStyle } from './StyledComponents'
-import { FaCaretDown, FaCaretUp, FaSort } from 'react-icons/fa'
+import { FaCaretDown, FaCaretUp } from 'react-icons/fa'
 import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri'
 
 const BasicTable = ({ COLUMNS, DATA }) => {
-  const columns = useMemo(() => COLUMNS, [])
-  const data = useMemo(() => DATA, [])
+  // const columns = useMemo(() => COLUMNS, [])
+  // const data = useMemo(() => DATA, [])
 
   const tableInstance = useTable(
     {

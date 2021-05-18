@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
-import * as FaIcons from 'react-icons/fa'
-import * as AiIcons from 'react-icons/ai'
-import styled, { css } from 'styled-components'
-import { Link } from 'react-router-dom'
+// import * as FaIcons from 'react-icons/fa'
+// import * as AiIcons from 'react-icons/ai's
+// import styled, { css } from 'styled-components'
+// import { Link } from 'react-router-dom'
 import { SidebarData } from './SidebarData'
 import SubMenu from './SubMenu'
-import { Nav, NavIcon, SideBarNav, SidebarWrap } from './StyledComponents'
+import { SideBarNav, SidebarWrap } from './StyledComponents'
 
 const Sidebar = ({ visible, setOpen }) => {
   const [sidebar, setSidebar] = useState(false)
 
-  const showSidebar = () => setSidebar(!sidebar)
+  // const showSidebar = () => setSidebar(!sidebar)
 
   return (
     <>

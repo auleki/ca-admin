@@ -457,6 +457,36 @@ export const ClothingCard = styled.div(
       font-weight: 600;
       /* background: ${colors.black}; */
     }
+
+    @media (min-width:550px) and (max-width: 1000px) {
+      .clothing {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1em;
+      }
+    }
+
+    /* 22233805584
+    08129833414  */
+    
+    @media (min-width: 600px) and (max-width: 790px) {
+      .clothing {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1em;
+      }
+    }
+    }
+
+    @media (min-width: 320px) and (max-width: 600px) {
+      .clothing {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: em;
+
+      }
+    }
+    }
   `
 )
 
