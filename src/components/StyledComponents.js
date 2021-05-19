@@ -11,10 +11,11 @@ export const AltPageWrap = styled.div(
     height: 100%;
     background: ${colors.darkGray};
     padding: 3em 3em 0;
-    overflow: auto;
+    /* overflow: auto; */
+    overflow-y: scroll;
     position: relative;
     top: 0;
-    margin-bottom: 5em;
+    /* margin-bottom: 5em; */
 
     .cardRow {
       display: flex;
@@ -60,6 +61,10 @@ export const PageWrap = styled.div(
       position: absolute;
       right: 5em;
       top: 2em;
+    }
+
+    @media (max-width: 450px) {
+      padding: 0 1em 1em;
     }
   `
 )
@@ -465,7 +470,7 @@ export const ClothingCard = styled.div(
         gap: 1em;
       }
     }
-
+    
     /* 22233805584
     08129833414  */
     
@@ -476,17 +481,16 @@ export const ClothingCard = styled.div(
         gap: 1em;
       }
     }
-    }
+    
 
     @media (min-width: 320px) and (max-width: 600px) {
       .clothing {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-        gap: em;
-
+        gap: 1em;
       }
     }
-    }
+    
   `
 )
 
@@ -825,6 +829,11 @@ export const FormStyle = styled.form(
         padding: 1em .5;
       }
     }
+
+    @media (min-width:320px) and (max-width: 720px) {
+      width: 90%;
+    }
+    
   `
 )
 

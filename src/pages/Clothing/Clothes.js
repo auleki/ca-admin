@@ -292,8 +292,9 @@ const Clothes = () => {
     const loadClothes = async () => {
       try {
         // console.log('Clothes are being loaded')
-        const clothUrl = 'http://localhost:6500/api/clothing'
-        // 'https://afternoon-chamber-08446.herokuapp.com/api/clothing'
+        // const clothUrl = 'http://localhost:6500/api/clothing'
+        const clothUrl =
+          'https://afternoon-chamber-08446.herokuapp.com/api/clothing'
         const { data } = await fetchData(clothUrl)
         setClothing(data)
         // console.log('DATA:::HOME', data)

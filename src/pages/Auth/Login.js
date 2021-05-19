@@ -54,7 +54,7 @@ const Login = ({ setUser }) => {
       const userInfo = { username, password }
       const url =
         'https://afternoon-chamber-08446.herokuapp.com/api/admin/login'
-      const localUrl = 'http://localhost:6500/api/admin/login'
+      // const localUrl = 'http://localhost:6500/api/admin/login'
       const { data } = await axios.post(url, userInfo)
       await saveTokenToStorage(data)
       console.table(data)
@@ -85,7 +85,7 @@ const Login = ({ setUser }) => {
             {/* <span>Username</span> */}
           </label>
           <input
-            placeholder="username"
+            placeholder='username'
             autoFocus
             type='text'
             onChange={usernameInput}
@@ -99,7 +99,7 @@ const Login = ({ setUser }) => {
             {/* <span>Password</span> */}
           </label>
           <input
-            placeholder="password"
+            placeholder='password'
             type='password'
             onChange={passwordInput}
             value={password}
