@@ -471,9 +471,6 @@ export const ClothingCard = styled.div(
       }
     }
     
-    /* 22233805584
-    08129833414  */
-    
     @media (min-width: 600px) and (max-width: 790px) {
       .clothing {
         display: grid;
