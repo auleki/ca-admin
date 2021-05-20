@@ -12,8 +12,15 @@ import {
   AiOutlineClockCircle,
   AiOutlinePicture,
   AiOutlineClose,
-  AiOutlineLoading
+  AiOutlineLoading,
+  AiOutlineUserAdd,
+  AiOutlinePlusSquare,
+  AiOutlineSkin,
+  AiOutlinePlus,
+  AiOutlineTags
 } from 'react-icons/ai'
+
+import * as GiIcons from 'react-icons/gi'
 
 export const colors = {
   black: '#262626',
@@ -52,5 +59,14 @@ export const icons = {
   lockColored: <FcIcon.FcLock />,
   businessMan: <FcIcon.FcBusinessman />,
   close: <AiOutlineClose />,
-  loading: <AiOutlineLoading />
+  loading: <AiOutlineLoading />,
+  winners: <AiOutlineTrophy />,
+  subscribers: <AiOutlineUserAdd />,
+  orders: <AiOutlineTags />,
+  clothes: <AiOutlineSkin />,
+  overview: <GiIcons.GiDeadEye />,
+  add: <AiOutlinePlusSquare />,
+  tick: <FiIcon.FiCheckSquare />,
+  cancelSquare: <FiIcon.FiXSquare />,
+  cancel: <FiIcon.FiX />
 }

@@ -12,7 +12,16 @@ export const fetchData = async url => {
   try {
     return await axios.get(url)
   } catch (error) {
-    throw Error('error in fetching data', error)
+    console.error(error)
+  }
+}
+
+export const postData = async (url, data) => {
+  try {
+    // make sure admin has the right token to perform this action
+    return await axios.post(url, data)
+  } catch (error) {
+    throw Error('error while posting', error)
   }
 }
 
@@ -26,4 +35,9 @@ export const fetchAdmin = async (adminInfo, url) => {
   } catch (error) {
     throw Error(error)
   }
+}
+
+export const generateClothId = () => {
+  const random = Math.round(Math.random() * 100000)
+  return `00X${random}CA`
 }

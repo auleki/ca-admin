@@ -6,19 +6,46 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 
+export const AltPageWrap = styled.div(
+  ({ bg }) => css`
+    height: 100%;
+    background: ${colors.darkGray};
+    padding: 3em 3em 0;
+    overflow: auto;
+    position: relative;
+    top: 0;
+    margin-bottom: 5em;
+
+    .cardRow {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .shiftDown {
+      margin: 4em 0 1em;
+    }
+
+    @media (min-width: 320px) and (max-width: 820px) {
+      .cardRow {
+        /* width: 80vh;
+        height: 100%; */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
+      }
+    }
+  `
+)
+
 export const PageWrap = styled.div(
   ({ bg }) => css`
     background: ${bg ? 'url(bg)' : colors.white};
     height: 100vh;
     font-family: ${fonts.main};
     overflow-y: scroll;
-    padding: 0 1em;
-
-    .cardRow {
-      display: flex;
-      /* gap: 1em; */
-      justify-content: space-between;
-    }
+    z-index: 50;
+    padding: 0 3em 1em;
 
     .flex {
       display: flex;
@@ -28,13 +55,20 @@ export const PageWrap = styled.div(
         margin-left: 0.5em;
       }
     }
+
+    .uploadArea .upload {
+      position: absolute;
+      right: 5em;
+      top: 2em;
+    }
   `
 )
 
 export const AppWrap = styled.div(
   ({ color }) => css`
-    display: grid;
-    grid-template-columns: 250px 3.5fr;
+    /* display: flex; */
+    justify-content: space-evenly;
+    /* grid-template-columns: 250px 3.5fr; */
     background: ${colors.black};
     width: 100%;
     height: 100vh;
@@ -50,6 +84,7 @@ export const Nav = styled.div`
   display: flex;
   /* position: fixed; */
   left: 0;
+  width: 100px;
   justify-content: flex-start;
   padding-top: 2em;
   align-items: center;
@@ -83,26 +118,109 @@ export const BadgeText = styled.span(
 export const SideBarNav = styled.div(
   ({ sidebar }) => css`
     background: #1a1a1a;
-    /* background: #d62828; */
     width: 250px;
-    height: 100vh;
-    display: flex;
-    /* align-items: center; */
-    justify-content: center;
     color: #fff;
-    position: fixed;
-    top: 0;
-    /* padding-top: 7%; */
-    left: ${sidebar ? '0' : '-100%'};
+    position: relative;
+    z-index: 1000;
     transition: 350ms ease-in;
-    z-index: 10;
+
+    .sidenav {
+      /* width: 350px; */
+      background: #011627;
+      position: absolute;
+      height: 95vh;
+      padding: 0;
+      left: -100%;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      font-family: $secondary;
+      z-index: 50;
+      transition: 200ms ease-in;
+
+      &.active {
+        left: 0;
+      }
+    }
+  `
+)
+
+export const SideNavStyle = styled.div(
+  ({ compact, active }) => css`
+    width: 240px;
+    /* height: 86vh; */
+    height: 100vh;
+    color: ${colors.altWhite};
+    position: absolute;
+    background: ${colors.black};
+    top: 0;
+    z-index: 400;
+    transition: 300ms ease-in;
+    left: ${active ? '0' : '-100%'};
+
+    .sidenav {
+      background: ${colors.red};
+      padding: 0;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      font-family: $secondary;
+      z-index: 50;
+      transition: 200ms ease-in;
+
+      &.active {
+        left: 0;
+      }
+    }
+
+    .navigation {
+      list-style-type: none;
+      overflow-x: hidden;
+      font-family: ${fonts.primary};
+
+      a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+
+        color: ${colors.white};
+
+        &:hover {
+          a {
+            color: ${colors.white};
+          }
+        }
+      }
+
+      li {
+        padding: 1em 1em;
+        width: 100%;
+        display: flex;
+        gap: 0.5em;
+        align-items: center;
+        font-size: 1.1em;
+        border-top-left-radius: 0.5em;
+        border-bottom-left-radius: 0.5em;
+
+        span {
+          transition: 150ms ease-in;
+        }
+
+        &:hover {
+          color: ${colors.altWhite};
+          background: ${colors.red};
+
+          span {
+            padding: 0 0.8em;
+          }
+        }
+      }
+    }
   `
 )
 
 export const SidebarWrap = styled.div`
   width: 100%;
-  padding-top: 5%;
-  z-index: 100;
+  /* padding-top: 5%; */
+  /* z-index: 100; */
 `
 
 export const SidebarLink = styled(Link)`
@@ -260,8 +378,9 @@ export const Row = styled.div(
 export const IconButton = styled.button(
   ({ bgColor, outlined }) => css`
     /* height: 3em; */
-    padding: .8em 1.5em;
-    border-radius: 2px;
+    width: 100%;
+    padding: .5em;
+    /* border-radius: 2px; */
     background: ${outlined ? 'transparent' : colors.orange};
     border: 4px solid ${outlined ? colors.orange : 'transparent'};
     display: flex;
@@ -276,10 +395,14 @@ export const IconButton = styled.button(
       color: ${colors.black};
     } */
 
+    svg {
+        transition: 200ms ease-in;
+      }
+    
     &:hover {
-      background: ${outlined ? 'transparent' : colors.black};
+      background: ${outlined ? 'transparent' : colors.altWhite};
       cursor: pointer;
-      color: ${outlined ? colors.orange : colors.white};
+      color: ${outlined ? colors.orange : colors.orange};
       /* transform: translateY(.1em); */
       /* border: 4px solid ${outlined ? colors.black : colors.orange}; */
 
@@ -287,6 +410,10 @@ export const IconButton = styled.button(
         background: ${outlined ? colors.gray : colors.gray};
         color: ${colors.black};
         /* border: 4px solid ${colors.gray}; */
+      }
+
+      svg {
+        transform: scale(1.2);
       }
 
       span {
@@ -307,7 +434,8 @@ export const ClothingCard = styled.div(
   ({ size, color }) => css`
     
     /* background: ${colors.green}; */
-    margin-bottom: 4em;
+    margin: 2em 0 10em;
+    /* margin-bottom: 4em; */
     font-family: ${fonts.quickSand};
     .clothing {
       /* display: flex; */
@@ -319,10 +447,50 @@ export const ClothingCard = styled.div(
       justify-content: space-evenly;
       margin-bottom: 3em;
     }
+
+    .error-section {
+      margin-top: 1em;
+      color: red;
+      padding: .5em 0;
+      text-transform: uppercase;
+      font-size: .9em;
+      font-weight: 600;
+      /* background: ${colors.black}; */
+    }
+
+    @media (min-width:550px) and (max-width: 1000px) {
+      .clothing {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1em;
+      }
+    }
+
+    /* 22233805584
+    08129833414  */
+    
+    @media (min-width: 600px) and (max-width: 790px) {
+      .clothing {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1em;
+      }
+    }
+    }
+
+    @media (min-width: 320px) and (max-width: 600px) {
+      .clothing {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: em;
+
+      }
+    }
+    }
   `
 )
 
-export const ClothCard = styled.div(
+export const StyleClothCard = styled.div(
   ({ color, size }) => css`
     padding: 1em 1em;
     text-align: center;
@@ -337,8 +505,19 @@ export const ClothCard = styled.div(
       background: transparent;
       padding: 1.5em;
       border-radius: 3px;
+      img {
+        height: 10em;
+        width: 10em;
+        object-fit: cover;
+      }
     }
 
+    .priceSection {
+      button {
+        margin: 0 auto;
+      }
+    }
+    
     .price {
       background: ${colors.altWhite};
       color: ${colors.black};
@@ -386,6 +565,10 @@ export const ClothCard = styled.div(
       .image {
         /* background: ${colors.lightOrange}; */
       }
+
+      input {
+        background: ${colors.gray};
+      }
     }
   `
 )
@@ -399,6 +582,28 @@ const Spin = keyframes`
     transform: rotate(0deg);
   }
 `
+
+// export const IconButton = styled.button(
+//   ({ color }) => css`
+//     border: 0;
+//     outline: 0;
+//     padding: 1em 1.5em;
+//     font-family: ${fonts.quickSand};
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     color: ${colors.white};
+//     transition: 200ms ease-in-out;
+//     border-bottom: 0.2em solid transparent;
+
+//     &:hover,
+//     &:focus {
+//       svg {
+//         transform: scale(1.6) ${noRotate ? '' : 'rotate(-90deg)'};
+//       }
+//     }
+//   `
+// )
 
 export const Button = styled.button(
   ({ color, size, noRotate, loading }) => css`
@@ -424,6 +629,11 @@ export const Button = styled.button(
       font-weight: 600;
     }
 
+    .upload {
+      position: absolute;
+      /* color: ${colors.blue}; */
+    }
+    
     .button_icon {
       /* font-size: 1em; */
       display: flex;
@@ -440,6 +650,7 @@ export const Button = styled.button(
 
     svg {
       transition: 200ms ease-out;
+      font-size: 1.3em;
     }
 
     &:hover,
@@ -448,7 +659,7 @@ export const Button = styled.button(
       color: ${colors.orange};
       cursor: pointer;
       border-bottom: 0.2em solid ${colors.red};
-      border-radius: 0;
+      /* border-radius: 0; */
 
       span {
         transform: translateX(-0.4em);
@@ -461,7 +672,7 @@ export const Button = styled.button(
     }
 
     &:active {
-      transform: translateY(1em);
+      transform: translateY(.5em);
     }
   `
 )
@@ -519,6 +730,48 @@ export const IOS_SWITCH = withStyles(theme => ({
   )
 })
 
+const FadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`
+
+export const Box = styled.div(
+  ({ hide }) => css`
+    display: ${hide ? 'block' : 'none'};
+    animation: ${FadeIn} 800ms;
+    height: 100vh;
+    z-index: 400;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: ${colors.altWhite};
+
+    .close {
+      color: ${colors.red};
+      position: absolute;
+      right: 2em;
+      top: 2em;
+      height: 1em;
+      border-radius: 50%;
+      padding: 0.5em;
+      width: 1em;
+      transition: 200ms ease-in-out;
+
+      &:hover {
+        background: ${colors.orange};
+        cursor: pointer;
+        color: ${colors.altWhite};
+      }
+    }
+  `
+)
+
 export const FormStyle = styled.form(
   ({ color, size, full }) => css`
     display: flex;
@@ -549,7 +802,7 @@ export const FormStyle = styled.form(
       margin-bottom: 1em;
       
       label {
-        padding: .5em 0;
+        padding: 1em 0;
         display: flex;
         align-items: center;
         gap: .5em;
@@ -558,6 +811,18 @@ export const FormStyle = styled.form(
           background: ${colors.gray};
           border-radius: 100px;
         }
+      }
+
+      input, select {
+        outline: 0;
+        border: 0;
+        padding: 1em 1em;
+        border-radius: .2em;
+        background: ${colors.gray};
+      }
+
+      select {
+        padding: 1em .5;
       }
     }
   `
@@ -613,6 +878,20 @@ export const ErrorStyle = styled.div(
   `
 )
 
+const shockBounce = keyframes`
+	0% {
+		transform: translateY(-.2em);
+	}
+
+	60% {
+		transform: translateY(.2em);
+	}
+
+	100% {
+		transform: translateY(0em);
+	}
+`
+
 export const MiniCard = styled.div(
   ({ bgColor, pColor }) => css`
     height: 100%;
@@ -621,10 +900,18 @@ export const MiniCard = styled.div(
     font-size: 1.3em;
     font-family: ${fonts.quickSand};
     text-align: center;
-    border-radius: 0.1em;
-    color: ${colors.lightDark};
-    border-bottom: 0.2em solid ${colors.lightDark};
-    background: ${colors.gray};
+    /* border-radius: 1em; */
+    color: ${colors.altWhite};
+    border: 0.15em solid transparent;
+    transition: transform 100ms ease-in, box-shadow 200ms ease-in,
+      background 300ms ease-in;
+    border-bottom: 0.15em solid ${colors.green};
+    background: linear-gradient(to right, #33333385, #33333370),
+      url('https://res.cloudinary.com/dyj6pqx6d/image/upload/v1621061901/asteroids_bwlczi.jpg');
+    box-shadow: 5px 1px 5px 0px rgba(131, 131, 131, 0.75);
+    -webkit-box-shadow: 5px 1px 5px 0px rgba(131, 131, 131, 0.75);
+    -moz-box-shadow: 5px 1px 5px 0px rgba(131, 131, 131, 0.75);
+    background-size: cover;
 
     p {
       background: ${pColor || colors.black};
@@ -636,12 +923,34 @@ export const MiniCard = styled.div(
       justify-content: center;
       display: inline-flex;
     }
+
+    &:hover {
+      /* transform: translateY(0.15em); */
+      border: 0.15em solid ${colors.lightGreen};
+      z-index: 10;
+    }
+
+    @media (min-width: 550px) and (max-width: 890px) {
+      width: 60vh;
+    }
+
+    @media (min-width: 320px) and (max-width: 550px) {
+      width: 100%;
+    }
   `
 )
-// .errorMsg {
-//   padding: .5em 0;
-//   margin-bottom: 1em;
-//   border-radius: 1em;
-//   background: ${colors.red};
-//   text-align: center
-// }
+
+export const InputGroup = styled.div(
+  ({ size }) => css`
+    display: flex;
+
+    input {
+      padding: 0.2em 0 0 1em;
+      background: ${colors.white};
+      font-family: ${fonts.ibmPlex};
+      letter-spacing: 1px;
+      outline: 0;
+      border: 0;
+    }
+  `
+)

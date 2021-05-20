@@ -1,29 +1,24 @@
 import React, { useState } from 'react'
-import * as FaIcons from 'react-icons/fa'
-import * as AiIcons from 'react-icons/ai'
-import styled, { css } from 'styled-components'
-import { Link } from 'react-router-dom'
+// import * as FaIcons from 'react-icons/fa'
+// import * as AiIcons from 'react-icons/ai's
+// import styled, { css } from 'styled-components'
+// import { Link } from 'react-router-dom'
 import { SidebarData } from './SidebarData'
 import SubMenu from './SubMenu'
-import { Nav, NavIcon, SideBarNav, SidebarWrap } from './StyledComponents'
+import { SideBarNav, SidebarWrap } from './StyledComponents'
 
-const Sidebar = () => {
+const Sidebar = ({ visible, setOpen }) => {
   const [sidebar, setSidebar] = useState(false)
 
-  const showSidebar = () => setSidebar(!sidebar)
+  // const showSidebar = () => setSidebar(!sidebar)
 
   return (
     <>
-      <Nav>
-        <NavIcon to='#' onClick={showSidebar}>
-          <FaIcons.FaArrowCircleRight />
-        </NavIcon>
-      </Nav>
-      <SideBarNav sidebar={sidebar}>
-        <SidebarWrap>
-          <NavIcon to='#'>
-            <FaIcons.FaWindowClose onClick={showSidebar} />
-          </NavIcon>
+      <SideBarNav
+        className={visible ? 'sidenav active' : 'sidenav'}
+        sidebar={sidebar}
+      >
+        <SidebarWrap onClick={() => setOpen(false)}>
           {SidebarData.map((item, index) => (
             <SubMenu item={item} key={index} />
           ))}
