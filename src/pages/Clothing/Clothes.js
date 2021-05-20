@@ -11,12 +11,12 @@ import {
   InputGroup
 } from '../../components/StyledComponents'
 import { v4 as uuidv4 } from 'uuid'
-import {
-  Image,
-  Video,
-  Transformation,
-  CloudinaryContext
-} from 'cloudinary-react'
+// import {
+//   Image,
+//   Video,
+//   Transformation,
+//   CloudinaryContext
+// } from 'cloudinary-react'
 import { icons } from '../../components/constants'
 import CLOTHES from '../../assets/clothes.json'
 import BasicTable from '../../components/BasicTable'
