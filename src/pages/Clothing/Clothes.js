@@ -8,7 +8,10 @@ import {
   IconButton,
   FormStyle,
   Box,
-  InputGroup
+  SelectOptions,
+  InputGroup,
+  StyleToast,
+  StyledPanel
 } from '../../components/StyledComponents'
 import { v4 as uuidv4 } from 'uuid'
 // import {
@@ -29,6 +32,14 @@ import { formatToComma } from '../../services/operations'
 import { FormLabel } from '@material-ui/core'
 import { generateClothId } from '../../services/operations'
 
+const Toast = msg => {
+  return (
+    <StyleToast>
+      <p>MSG {msg}</p>
+    </StyleToast>
+  )
+}
+
 const ClothCard = ({ cloth }) => {
   // const [updatedPrice, setUpdatedPrice] = useState(0)
   const [editPrice, setEditPrice] = useState(false)
@@ -39,6 +50,7 @@ const ClothCard = ({ cloth }) => {
   const [error, setError] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [productId, setProductId] = useState('')
+  const [toastMsg, setToastMessage] = useState('')
 
   useEffect(() => {
     setName(cloth.name)
@@ -56,11 +68,14 @@ const ClothCard = ({ cloth }) => {
       const idTrim = id.replace(/\s+/g, '')
       const url = `http://localhost:6500/api/cloth/${idTrim}`
       console.log('ID(REACT):', idTrim)
-      const updateData = { inStock: !isInStock }
-      const response = await axios.patch(url, updateData)
+      console.log('STOCKED STATE:', isInStock)
+
+      // const updateData = { inStock: !isInStock }
+      const response = await axios.patch(url, { inStock: !isInStock })
       console.log(response)
       if (response.status === 200) {
-        setStocked(!isInStock)
+        setStocked(response.data.inStock)
+        // console.log(response)
       }
     } catch (err) {
       throw error(err)
@@ -76,10 +91,16 @@ const ClothCard = ({ cloth }) => {
     const url = `http://localhost:6500/api/cloth/${productId}`
     console.log(url)
     const toNumber = Number(price)
-    // const result = await axios.patch(url, toNumber)
+    const result = await axios.patch(url, { price })
     setNewPrice('')
-    console.log(typeof toNumber, 'NUMBER: ', toNumber)
-    // console.log('RESULT:', result)
+    console.log('RESULT:', result)
+    if (result.status === 200) {
+      setError(false)
+      setPrice(result.data.price)
+    } else {
+      setError(true)
+      setErrorMsg('Price could not be saved. Try again')
+    }
   }
 
   // useEffect(() => {
@@ -95,6 +116,7 @@ const ClothCard = ({ cloth }) => {
 
   return (
     <StyleClothCard className='cloth'>
+      {toastMsg && <Toast msg='sup people' />}
       <div className='image'>
         <img src={cloth.imageUrl} alt='' />
       </div>
@@ -106,7 +128,7 @@ const ClothCard = ({ cloth }) => {
           control={
             <IOS_SWITCH
               checked={stocked}
-              onChange={() => toggleStock(cloth.productId, cloth.inStock)}
+              onChange={() => toggleStock(cloth.productId, stocked)}
             />
           }
         />
@@ -272,6 +294,27 @@ const UploadForm = ({ visible, setShowForm }) => {
   )
 }
 
+const ControlPanel = () => {
+  const [toView, setToView] = useState('all')
+  const toViewSet = e => setToView(e.target.value)
+
+  return (
+    <StyledPanel>
+      <div className='flex'>
+        <p>Choose what merch is displayed </p>
+        <SelectOptions onChange={toViewSet}>
+          <option value='all'>Select one to view only</option>
+          <option value='all'>All</option>
+          <option value='shorts'>Shorts</option>
+          <option value='joggers'>Joggers</option>
+          <option value='t-shirts'>T-Shirts</option>
+          <option value='polos'>Polos</option>
+        </SelectOptions>
+      </div>
+    </StyledPanel>
+  )
+}
+
 const Clothes = () => {
   const [clothing, setClothing] = useState([])
   // const [available, setAvailable] = useState(true)
@@ -292,8 +335,9 @@ const Clothes = () => {
     const loadClothes = async () => {
       try {
         // console.log('Clothes are being loaded')
-        const clothUrl = 'http://localhost:6500/api/clothing'
-        // 'https://afternoon-chamber-08446.herokuapp.com/api/clothing'
+        const clothUrl =
+          // 'http://localhost:6500/api/clothing'
+          'https://afternoon-chamber-08446.herokuapp.com/api/clothing'
         const { data } = await fetchData(clothUrl)
         setClothing(data)
         // console.log('DATA:::HOME', data)
@@ -334,6 +378,8 @@ const Clothes = () => {
         </div>
       ) : (
         <div className='uploadArea'>
+          {/* Add panel with additional actions when needed */}
+          {/* <ControlPanel /> */}
           <UploadForm visible={showForm} setShowForm={setShowForm} />
           <Button className='upload' onClick={() => setShowForm(true)}>
             <span>Add Cloth</span>

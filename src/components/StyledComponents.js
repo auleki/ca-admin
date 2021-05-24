@@ -38,6 +38,14 @@ export const AltPageWrap = styled.div(
   `
 )
 
+export const StyleToast = styled.section(
+  size => css`
+    background: ${colors.orange};
+    color: ${colors.lightDark};
+    width: 10rem;
+  `
+)
+
 export const PageWrap = styled.div(
   ({ bg }) => css`
     background: ${bg ? 'url(bg)' : colors.white};
@@ -475,8 +483,7 @@ export const ClothingCard = styled.div(
         grid-template-columns: repeat(2, 1fr);
         gap: 1em;
       }
-    }
-    }
+    } 
 
     @media (min-width: 320px) and (max-width: 600px) {
       .clothing {
@@ -486,7 +493,7 @@ export const ClothingCard = styled.div(
 
       }
     }
-    }
+    
   `
 )
 
@@ -936,6 +943,32 @@ export const MiniCard = styled.div(
 
     @media (min-width: 320px) and (max-width: 550px) {
       width: 100%;
+    }
+  `
+)
+
+export const StyledPanel = styled.div(
+  ({ mini }) => css`
+    width: 100%;
+    /* background: ${colors.gray}; */
+    padding: 1em;
+  `
+)
+
+export const SelectOptions = styled.select(
+  ({ mini }) => css`
+    padding: 1em 0.5em;
+    border: 0;
+    outline: 0;
+    border-radius: 0.3em;
+    background-color: ${colors.orange};
+    color: ${colors.altWhite};
+
+    option {
+      background: ${colors.gray};
+      outline: 0;
+      border: 0;
+      color: ${colors.black};
     }
   `
 )
