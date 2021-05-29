@@ -46,10 +46,11 @@ const ClothCard = ({ cloth }) => {
   const [newPrice, setNewPrice] = useState('')
   const [name, setName] = useState('')
   const [stocked, setStocked] = useState(false)
-  const [price, setPrice] = useState('')
+  const [price, setPrice] = useState(0)
   const [error, setError] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
   const [productId, setProductId] = useState('')
+  const [mainId, setMainId] = useState('')
   const [toastMsg, setToastMessage] = useState('')
 
   useEffect(() => {
@@ -57,7 +58,8 @@ const ClothCard = ({ cloth }) => {
     setStocked(cloth.inStock)
     setPrice(cloth.price)
     setProductId(cloth.productId)
-  }, [])
+    setMainId(cloth._id)
+  }, [cloth._id, cloth.inStock, cloth.name, cloth.price, cloth.productId])
 
   const togglePriceEdit = () => setEditPrice(!editPrice)
 
@@ -69,29 +71,29 @@ const ClothCard = ({ cloth }) => {
       const url = `http://localhost:6500/api/cloth/${idTrim}`
       console.log('ID(REACT):', idTrim)
       console.log('STOCKED STATE:', isInStock)
-
-      // const updateData = { inStock: !isInStock }
+      console.table('::MAIN ID::', mainId)
       const response = await axios.patch(url, { inStock: !isInStock })
-      console.log(response)
+      console.log('Response:', response)
       if (response.status === 200) {
         setStocked(response.data.inStock)
-        // console.log(response)
       }
     } catch (err) {
-      throw error(err)
+      console.error(err)
     }
   }
 
-  const savePrice = async (e, price) => {
+  const savePrice = async (e, _id) => {
     e.preventDefault()
     if (!newPrice) {
       setError(true)
       setErrorMsg('The new price needs some value')
     }
-    const url = `http://localhost:6500/api/cloth/${productId}`
+    const idTrim = _id.replace(/\s+/g, '')
+    const url = `http://localhost:6500/api/cloth/${idTrim}`
     console.log(url)
-    const toNumber = Number(price)
-    const result = await axios.patch(url, { price })
+    const toNumber = Number(newPrice)
+    console.log('TO NUMBER: ', toNumber)
+    const result = await axios.patch(url, { price: toNumber })
     setNewPrice('')
     console.log('RESULT:', result)
     if (result.status === 200) {
@@ -102,11 +104,6 @@ const ClothCard = ({ cloth }) => {
       setErrorMsg('Price could not be saved. Try again')
     }
   }
-
-  // useEffect(() => {
-  //   const productId = generateClothId()
-  //   console.log('RAN ID:', productId)
-  // }, [])
 
   const cancelEditPrice = () => {
     setError(false)
@@ -122,13 +119,15 @@ const ClothCard = ({ cloth }) => {
       </div>
       <p className='name'>{name}</p>
       <p className='price'>₦{formatToComma(price)}</p>
+      {/* <p className='price'>₦{price}</p> */}
       <div className='cardSwitch'>
         <span>FINISHED</span>
+        {/* <span>{cloth._id}</span> */}
         <FormControlLabel
           control={
             <IOS_SWITCH
               checked={stocked}
-              onChange={() => toggleStock(cloth.productId, stocked)}
+              onChange={() => toggleStock(cloth._id, stocked)}
             />
           }
         />
@@ -136,7 +135,7 @@ const ClothCard = ({ cloth }) => {
       </div>
       <div className='priceSection'>
         {editPrice ? (
-          <form onSubmit={price => savePrice(price)}>
+          <form onSubmit={e => savePrice(e, cloth._id)}>
             <InputGroup>
               {/* <FormStyle> */}
               <input
@@ -146,10 +145,7 @@ const ClothCard = ({ cloth }) => {
                 value={newPrice}
                 onChange={takeNewPrice}
               />
-              <IconButton
-                noRotate
-                onClick={(e, price) => savePrice(e, newPrice)}
-              >
+              <IconButton noRotate>
                 <span>{icons.tick}</span>
               </IconButton>
               <IconButton
