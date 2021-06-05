@@ -41,3 +41,7 @@ export const generateClothId = () => {
   const random = Math.round(Math.random() * 100000)
   return `00X${random}CA`
 }
+
+// export const saveNewCloth = () => {
+
+// }

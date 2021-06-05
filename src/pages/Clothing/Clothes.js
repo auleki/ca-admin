@@ -68,12 +68,9 @@ const ClothCard = ({ cloth }) => {
   async function toggleStock (id, isInStock) {
     try {
       const idTrim = id.replace(/\s+/g, '')
-      const url = `http://localhost:6500/api/cloth/${idTrim}`
-      console.log('ID(REACT):', idTrim)
-      console.log('STOCKED STATE:', isInStock)
-      console.table('::MAIN ID::', mainId)
+      // const url = `http://localhost:6500/api/cloth/${idTrim}`
+      const uri = process.env.REACT_APP_BASE_URL
       const response = await axios.patch(url, { inStock: !isInStock })
-      console.log('Response:', response)
       if (response.status === 200) {
         setStocked(response.data.inStock)
       }
@@ -82,26 +79,27 @@ const ClothCard = ({ cloth }) => {
     }
   }
 
-  const savePrice = async (e, _id) => {
-    e.preventDefault()
-    if (!newPrice) {
-      setError(true)
-      setErrorMsg('The new price needs some value')
-    }
-    const idTrim = _id.replace(/\s+/g, '')
-    const url = `http://localhost:6500/api/cloth/${idTrim}`
-    console.log(url)
-    const toNumber = Number(newPrice)
-    console.log('TO NUMBER: ', toNumber)
-    const result = await axios.patch(url, { price: toNumber })
-    setNewPrice('')
-    console.log('RESULT:', result)
-    if (result.status === 200) {
-      setError(false)
-      setPrice(result.data.price)
-    } else {
-      setError(true)
-      setErrorMsg('Price could not be saved. Try again')
+  const savePrice = async (e, id) => {
+    try {
+      e.preventDefault()
+      if (!newPrice) {
+        setError(true)
+        setErrorMsg('The new price needs some value')
+      }
+      const idTrim = id.replace(/\s+/g, '')
+      const url = `http://localhost:6500/api/cloth/${idTrim}`
+      const toNumber = Number(newPrice)
+      const result = await axios.patch(url, { price: toNumber })
+      setNewPrice('')
+      if (result.status === 200) {
+        setError(false)
+        setPrice(result.data.price)
+      } else {
+        setError(true)
+        setErrorMsg('Price could not be saved. Try again')
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -127,7 +125,7 @@ const ClothCard = ({ cloth }) => {
           control={
             <IOS_SWITCH
               checked={stocked}
-              onChange={() => toggleStock(cloth._id, stocked)}
+              onChange={() => toggleStock(cloth.productId, stocked)}
             />
           }
         />
@@ -135,7 +133,7 @@ const ClothCard = ({ cloth }) => {
       </div>
       <div className='priceSection'>
         {editPrice ? (
-          <form onSubmit={e => savePrice(e, cloth._id)}>
+          <form onSubmit={e => savePrice(e, cloth.productId)}>
             <InputGroup>
               {/* <FormStyle> */}
               <input
@@ -178,7 +176,7 @@ const ClothingArea = ({ clothing }) => {
       <div className='clothing'>
         {clothing.map((cloth, i) => (
           <div>
-            <ClothCard cloth={cloth} key={cloth.id} />
+            <ClothCard cloth={cloth} key={cloth.name} />
           </div>
         ))}
       </div>
@@ -193,22 +191,28 @@ const UploadForm = ({ visible, setShowForm }) => {
   const [isFileSelected, setIsFileSelected] = useState(false)
   const [inStock, setInStock] = useState(true)
   const [category, setCategory] = useState()
-  const [image, setImage] = useState(null)
+  const [image, setImage] = useState('')
 
   async function uploadCloth (e) {
     e.preventDefault()
-    const localUrl = 'http://localhost:6500/api/cloth'
+    const uploadForm = new FormData()
+    // if (isFileSelected && image.type !== 'image/jpeg') {
+    //   // setError()
+    // }
+    uploadForm.append('file', image)
+    const localUrl = 'http://localhost:6500/api/cloth/upload'
     const newCloth = {
       name,
       price,
-      image,
       category,
       inStock,
+      imageFile: image,
       productId: uuidv4()
     }
-    console.log('NEW CLOTH!', newCloth)
-    const savedCloth = await axios.post(localUrl, newCloth)
-    console.log('PAYLOAD:', newCloth)
+    uploadForm.append('clothDetails', newCloth)
+    console.log('NEW UPLOAD!', uploadForm)
+    const savedCloth = await axios.post(localUrl, uploadForm)
+    // console.log('PAYLOAD:', newCloth)
     console.table('RESPONSE: ', savedCloth)
   }
 
@@ -275,8 +279,8 @@ const UploadForm = ({ visible, setShowForm }) => {
         <div className='formGroup'>
           <Button>Upload Clothing</Button>
         </div>
-        {/* {category ? <p>Selected category: {category}</p> : null} */}
-        {/* {isFileSelected ? (
+        {/* {category ? <p>Selected category: {category}</p> : null}
+        {isFileSelected ? (
           <div>
             <p>Filename: {image.name}</p>
             <p>File Type: {image.type}</p>
