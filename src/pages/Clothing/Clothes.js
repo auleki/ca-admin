@@ -61,6 +61,8 @@ const ClothCard = ({ cloth }) => {
     setMainId(cloth._id)
   }, [cloth._id, cloth.inStock, cloth.name, cloth.price, cloth.productId])
 
+  const baseUrl = `${process.env.REACT_APP_BASE_URL}/api/cloth`
+
   const togglePriceEdit = () => setEditPrice(!editPrice)
 
   const takeNewPrice = e => setNewPrice(e.target.value)
@@ -68,9 +70,10 @@ const ClothCard = ({ cloth }) => {
   async function toggleStock (id, isInStock) {
     try {
       const idTrim = id.replace(/\s+/g, '')
-      // const url = `http://localhost:6500/api/cloth/${idTrim}`
-      const uri = process.env.REACT_APP_BASE_URL
-      const response = await axios.patch(url, { inStock: !isInStock })
+      console.log('ID at toggle:=>', idTrim)
+      const uri = `${baseUrl}/${idTrim}`
+      console.log('uri at toggle:=>', uri)
+      const response = await axios.patch(uri, { inStock: !isInStock })
       if (response.status === 200) {
         setStocked(response.data.inStock)
       }
@@ -87,9 +90,9 @@ const ClothCard = ({ cloth }) => {
         setErrorMsg('The new price needs some value')
       }
       const idTrim = id.replace(/\s+/g, '')
-      const url = `http://localhost:6500/api/cloth/${idTrim}`
+      const uri = `${baseUrl}/${idTrim}`
       const toNumber = Number(newPrice)
-      const result = await axios.patch(url, { price: toNumber })
+      const result = await axios.patch(uri, { price: toNumber })
       setNewPrice('')
       if (result.status === 200) {
         setError(false)
@@ -120,12 +123,11 @@ const ClothCard = ({ cloth }) => {
       {/* <p className='price'>₦{price}</p> */}
       <div className='cardSwitch'>
         <span>FINISHED</span>
-        {/* <span>{cloth._id}</span> */}
         <FormControlLabel
           control={
             <IOS_SWITCH
               checked={stocked}
-              onChange={() => toggleStock(cloth.productId, stocked)}
+              onChange={() => toggleStock(cloth._id, stocked)}
             />
           }
         />
@@ -133,7 +135,7 @@ const ClothCard = ({ cloth }) => {
       </div>
       <div className='priceSection'>
         {editPrice ? (
-          <form onSubmit={e => savePrice(e, cloth.productId)}>
+          <form onSubmit={e => savePrice(e, cloth._id)}>
             <InputGroup>
               {/* <FormStyle> */}
               <input
@@ -175,8 +177,8 @@ const ClothingArea = ({ clothing }) => {
       {/* <BasicTable COLUMNS={columns} DATA={clothes} /> */}
       <div className='clothing'>
         {clothing.map((cloth, i) => (
-          <div>
-            <ClothCard cloth={cloth} key={cloth.name} />
+          <div key={cloth.name}>
+            <ClothCard cloth={cloth} />
           </div>
         ))}
       </div>
