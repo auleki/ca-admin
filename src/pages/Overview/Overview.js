@@ -38,7 +38,6 @@ const Overview = () => {
           <h3>Total Sales</h3>
           <p>10</p>
         </MiniCard>
-
         <MiniCard pColor={colors.red}>
           <h3>Subscribers</h3>
           <p>45</p>

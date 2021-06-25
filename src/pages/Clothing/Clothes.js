@@ -11,25 +11,20 @@ import {
   SelectOptions,
   InputGroup,
   StyleToast,
-  StyledPanel
+  StyledPanel,
+  TextButton
 } from '../../components/StyledComponents'
 import { v4 as uuidv4 } from 'uuid'
-// import {
-//   Image,
-//   Video,
-//   Transformation,
-//   CloudinaryContext
-// } from 'cloudinary-react'
 import { icons } from '../../components/constants'
-import CLOTHES from '../../assets/clothes.json'
-import BasicTable from '../../components/BasicTable'
+// import CLOTHES from '../../assets/clothes.json'
+// import BasicTable from '../../components/BasicTable'
 import { fetchData } from '../../services/operations'
-import FormGroup from '@material-ui/core/FormGroup'
+// import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import axios from 'axios'
-import { AiOutlineConsoleSql, AiOutlineSetting } from 'react-icons/ai'
+import { AiOutlineDelete, AiOutlineSetting } from 'react-icons/ai'
 import { formatToComma } from '../../services/operations'
-import { FormLabel } from '@material-ui/core'
+// import { FormLabel } from '@material-ui/core'
 import { generateClothId } from '../../services/operations'
 
 const Toast = msg => {
@@ -43,6 +38,7 @@ const Toast = msg => {
 const ClothCard = ({ cloth }) => {
   // const [updatedPrice, setUpdatedPrice] = useState(0)
   const [editPrice, setEditPrice] = useState(false)
+  const [deleteView, setDeleteView] = useState(false)
   const [newPrice, setNewPrice] = useState('')
   const [name, setName] = useState('')
   const [stocked, setStocked] = useState(false)
@@ -79,6 +75,20 @@ const ClothCard = ({ cloth }) => {
       }
     } catch (err) {
       console.error(err)
+    }
+  }
+
+  const toggleDeleteCloth = e => setDeleteView(!deleteView)
+
+  const deleteCloth = async id => {
+    try {
+      const {
+        data: { msg }
+      } = await axios.delete(`http://localhost:6500/api/cloth/${id}`)
+      if (msg === 'cloth deleted') setDeleteView(false)
+      // console.log(res)
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -160,11 +170,25 @@ const ClothCard = ({ cloth }) => {
             </InputGroup>
             <div className='error-section'>{error && errorMsg}</div>
           </form>
+        ) : deleteView ? (
+          <div className='confirmDelete'>
+            <h5>Sure you want to delete?</h5>
+            <div className='cardActions'>
+              <Button onClick={() => deleteCloth(cloth._id)}>Yes</Button>
+              <TextButton onClick={toggleDeleteCloth}>No</TextButton>
+            </div>
+          </div>
         ) : (
-          <Button onClick={togglePriceEdit}>
-            <span>Change Price</span>
-            <AiOutlineSetting />
-          </Button>
+          <div className='cardActions'>
+            <Button onClick={togglePriceEdit}>
+              <span>Change Price</span>
+              <AiOutlineSetting />
+            </Button>
+            <Button noRotate onClick={toggleDeleteCloth}>
+              <span></span>
+              <AiOutlineDelete />
+            </Button>
+          </div>
         )}
       </div>
     </StyleClothCard>

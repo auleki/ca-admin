@@ -69,6 +69,10 @@ export const PageWrap = styled.div(
       right: 5em;
       top: 2em;
     }
+
+    @media (min-width: 317px) and (max-width: 430px) {
+      padding: 0 1em 1em;
+    }
   `
 )
 
@@ -523,6 +527,21 @@ export const StyleClothCard = styled.div(
       button {
         margin: 0 auto;
       }
+
+      .cardActions  {
+        display: flex;
+      }
+
+
+      .confirmDelete {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .confirmDelete span {
+        display: block;
+      }
+      
     }
     
     .price {
@@ -611,6 +630,24 @@ const Spin = keyframes`
 //     }
 //   `
 // )
+
+export const TextButton = styled.button(
+  ({ color }) => css`
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid ${colors.orange};
+    color: ${colors.black};
+    transition: color 200ms ease-in, border-bottom 200ms ease-in;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+
+    &:hover {
+      color: ${colors.orange};
+      border-bottom: 2px solid ${colors.black};
+      cursor: pointer;
+    }
+  `
+)
 
 export const Button = styled.button(
   ({ color, size, noRotate, loading }) => css`
@@ -831,6 +868,10 @@ export const FormStyle = styled.form(
       select {
         padding: 1em .5;
       }
+    }
+
+    @media (max-width: 730px) {
+      width: 80vw;
     }
   `
 )

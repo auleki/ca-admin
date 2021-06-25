@@ -49,6 +49,7 @@ export const fonts = {
 
 export const icons = {
   user: <FiIcon.FiUser />,
+  bin: <FiIcon.FiTrash2 />,
   email: <HiOutlineMail />,
   badge: <HiOutlineBadgeCheck />,
   victory: <AiOutlineTrophy />,
